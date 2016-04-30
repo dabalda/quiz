@@ -4,13 +4,35 @@ var models = require('../models');
 
 // GET /quizzes
 exports.index = function(req, res, next) {
-	models.Quiz.findAll()
-		.then(function(quizzes) {
-			res.render('quizzes/index.ejs', { quizzes: quizzes});
-		})
-		.catch(function(error) {
-			next(error);
-		});
+
+	var search = req.query.search || '';
+
+	if (search !== "") {
+		search_sql = "%"+search.replace(/ /g, "%")+"%";
+
+		models.Quiz.findAll({where: ["question like ?", search_sql]})
+			.then(function(quizzes) {
+				quizzes.sort(function(a, b) {
+					return a.question.localeCompare(b.question);
+				});
+				res.render('quizzes/index.ejs', { quizzes: quizzes,
+												  search: search});
+			})
+			.catch(function(error) {
+				next(error);
+			});
+	}
+	else {
+		models.Quiz.findAll()
+			.then(function(quizzes) {
+				res.render('quizzes/index.ejs', { quizzes: quizzes,
+												  search: search});
+			})
+			.catch(function(error) {
+				next(error);
+			});
+	}
+
 };
 
 

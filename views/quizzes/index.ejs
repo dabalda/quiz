@@ -1,4 +1,7 @@
-
+<form method="get" action="/quizzes">
+  <input type="text" name="search" value="<%= search %>" placeholder="Pregunta"></input>
+  <input type="submit" value="Buscar">
+</form>
 <table>
   <% for (var i in quizzes) { %>        
      <tr>
