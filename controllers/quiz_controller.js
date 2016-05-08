@@ -4,20 +4,20 @@ var Sequelize = require('sequelize');
 
 // Autoload el quiz asociado a :quizId
 exports.load = function(req, res, next, quizId) {
-	models.Quiz.findById(quizId)
+	models.Quiz.findById(quizId, {attributes: ['id', 'question', 'answer']})
   		.then(function(quiz) {
       		if (quiz) {
         		req.quiz = quiz;
         		next();
       		} else { 
-      			next(new Error('No existe quizId=' + quizId));
+      			throw new Error('No existe quizId=' + quizId);
       		}
         })
         .catch(function(error) { next(error); });
 };
 
 
-// GET /quizzes
+// GET /quizzes.:format?
 exports.index = function(req, res, next) {
 
 	var search = req.query.search || '';
@@ -25,23 +25,39 @@ exports.index = function(req, res, next) {
 	if (search !== "") {
 		search_sql = "%"+search.replace(/ /g, "%")+"%";
 
-		models.Quiz.findAll({where: ["question like ?", search_sql]})
+		models.Quiz.findAll({where: ["question like ?", search_sql],
+                        order: ['question'],
+                        attributes: ['id', 'question', 'answer']})
 			.then(function(quizzes) {
-				quizzes.sort(function(a, b) {
-					return a.question.localeCompare(b.question);
-				});
-				res.render('quizzes/index.ejs', { quizzes: quizzes,
-												  search: search});
+        if (!req.params.format || req.params.format === "html") {
+            res.render('quizzes/index.ejs', { quizzes: quizzes,
+                        search: search});
+        }
+        else if (req.params.format === "json") {
+          res.send(JSON.stringify(quizzes));
+        }
+        else {
+          throw new Error('No se admite format=' + req.params.format);
+        }
+
 			})
 			.catch(function(error) {
 				next(error);
 			});
 	}
 	else {
-		models.Quiz.findAll()
+		models.Quiz.findAll({attributes: ['id', 'question', 'answer']})
 			.then(function(quizzes) {
-				res.render('quizzes/index.ejs', { quizzes: quizzes,
-												  search: search});
+				if (!req.params.format || req.params.format === "html") {
+            res.render('quizzes/index.ejs', { quizzes: quizzes,
+                        search: search});
+        }
+        else if (req.params.format === "json") {
+          res.send(JSON.stringify(quizzes));
+        }
+        else {
+          throw new Error('No se admite format=' + req.params.format);
+        }
 			})
 			.catch(function(error) {
 				next(error);
@@ -51,13 +67,21 @@ exports.index = function(req, res, next) {
 };
 
 
-// GET /quizzes/:id
+// GET /quizzes/:id.:format?
 exports.show = function(req, res, next) {
+  if (!req.params.format || req.params.format === "html") {
+  	var answer = req.query.answer || '';
 
-	var answer = req.query.answer || '';
+  	res.render('quizzes/show', {quiz: req.quiz,
+  								answer: answer});
+  }
+  else if (req.params.format === "json") {
+    res.send(JSON.stringify(req.quiz));
+  }
+  else {
+    throw new Error('No se admite format=' + req.params.format);
+  }
 
-	res.render('quizzes/show', {quiz: req.quiz,
-								answer: answer});
 };
 
 
