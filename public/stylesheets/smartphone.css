@@ -10,6 +10,6 @@ body {
 body { 
 	font-size: xx-large; 
 }
-footer, input { 
+footer, input, button { 
 	font-size: large; 
 }
