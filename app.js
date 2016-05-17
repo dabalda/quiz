@@ -10,6 +10,7 @@ var flash = require('express-flash');
 var methodOverride = require('method-override');
 
 var routes = require('./routes/index');
+var sessionController = require('./controllers/session_controller');
 
 var app = express();
 
@@ -30,6 +31,10 @@ app.use(methodOverride('_method', {methods: ["POST", "GET"]}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(partials());
 app.use(flash());
+
+// Autologout
+
+app.use(sessionController.autologout);
 
 // Helper dinámico:
 app.use(function(req, res, next) {
