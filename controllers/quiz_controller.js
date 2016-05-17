@@ -4,7 +4,7 @@ var Sequelize = require('sequelize');
 
 // Autoload el quiz asociado a :quizId
 exports.load = function(req, res, next, quizId) {
-	models.Quiz.findById(quizId, {attributes: ['id', 'question', 'answer'],
+	models.Quiz.findById(quizId, {attributes: ['id', 'question', 'answer', 'AuthorId'],
 								include: [models.Comment]})
   		.then(function(quiz) {
       		if (quiz) {
@@ -28,7 +28,7 @@ exports.index = function(req, res, next) {
 
 		models.Quiz.findAll({where: ["question like ?", search_sql],
                         order: ['question'],
-                        attributes: ['id', 'question', 'answer']})
+                        attributes: ['id', 'question', 'answer', 'AuthorId']})
 			.then(function(quizzes) {
         if (!req.params.format || req.params.format === "html") {
             res.render('quizzes/index.ejs', { quizzes: quizzes,
@@ -47,7 +47,7 @@ exports.index = function(req, res, next) {
 			});
 	}
 	else {
-		models.Quiz.findAll({attributes: ['id', 'question', 'answer']})
+		models.Quiz.findAll({attributes: ['id', 'question', 'answer', 'AuthorId']})
 			.then(function(quizzes) {
 				if (!req.params.format || req.params.format === "html") {
             res.render('quizzes/index.ejs', { quizzes: quizzes,
