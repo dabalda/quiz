@@ -6,6 +6,26 @@ var url = require('url');
 
 var sessionTimeout = 2 * 60 * 1000 // Tiempo de expiración de sesión de usuario
 
+// Middleware: Se requiere hacer login.
+//
+// Si el usuario ya hizo login anteriormente entonces existirá 
+// el objeto user en req.session, por lo que continúo con los demás 
+// middlewares o rutas.
+// Si no existe req.session.user, entonces es que aún no he hecho 
+// login, por lo que me redireccionan a una pantalla de login. 
+// Guardo en redir cuál es mi url para volver automáticamente a 
+// esa url despues de hacer login; pero si redir ya existe entonces
+// conservo su valor.
+// 
+exports.loginRequired = function (req, res, next) {
+    if (req.session.user) {
+        next();
+    } else {
+        res.redirect('/session?redir=' + (req.param('redir') || req.url));
+    }
+};
+
+
 /*
  * Autenticar un usuario: Comprueba si el usuario esta registrado en users
  *
@@ -27,6 +47,11 @@ var authenticate = function(login, password) {
 
 
 // GET /session   -- Formulario de login
+//
+// Paso como parámetro el valor de redir (es una url a la que 
+// redirigirme después de hacer login) que me han puesto en la 
+// query (si no existe uso /).
+//
 exports.new = function(req, res, next) {
     var redir = req.query.redir || 
                 url.parse(req.headers.referer || "/").pathname;
