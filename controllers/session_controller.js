@@ -26,6 +26,40 @@ exports.loginRequired = function (req, res, next) {
 };
 
 
+// MW que permite gestionar un usuario solamente si el usuario logeado es:
+//   - admin 
+//   - o es el usuario a gestionar.
+exports.adminOrMyselfRequired = function(req, res, next){
+
+    var isAdmin      = req.session.user.isAdmin;
+    var userId       = req.user.id;
+    var loggedUserId = req.session.user.id;
+
+    if (isAdmin || userId === loggedUserId) {
+        next();
+    } else {
+      console.log('Ruta prohibida: no es el usuario logeado, ni un administrador.');
+      res.send(403);    }
+};
+
+
+// MW que permite gestionar un usuario solamente si el usuario logeado es:
+//   - admin
+//   - y no es el usuario a gestionar.
+exports.adminAndNotMyselfRequired = function(req, res, next){
+
+    var isAdmin      = req.session.user.isAdmin;
+    var userId       = req.user.id;
+    var loggedUserId = req.session.user.id;
+
+    if (isAdmin || userId === loggedUserId) {
+        next();
+    } else {
+      console.log('Ruta prohibida: no es el usuario logeado, ni un administrador.');
+      res.send(403);    }
+};
+
+
 /*
  * Autenticar un usuario: Comprueba si el usuario esta registrado en users
  *
@@ -78,7 +112,7 @@ exports.create = function(req, res, next) {
               // Crear req.session.user y guardar campos id, username y expireTime
               // La sesión se define por la existencia de: req.session.user
               var expireTime = Date.now() + sessionTimeout;
-              req.session.user = {id:user.id, username:user.username, expireTime:expireTime};
+              req.session.user = {id:user.id, username:user.username, isAdmin:user.isAdmin, expireTime:expireTime};
 
               res.redirect(redir); // redirección a redir
             } else {

@@ -1,3 +1,4 @@
+
 <p>
   <form method="get" action="/quizzes/<%= quiz.id %>/check">        
     <p>
@@ -26,7 +27,8 @@
 
            <li> <%= comment.text %> </li>
 
-       <% } else if (session.user) { %>
+       <% } else if (session.user &&
+                     (session.user.isAdmin || (quiz.AuthorId === session.user.id))) { %>
 
            <li> <%= comment.text %> </li>
 
