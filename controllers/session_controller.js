@@ -109,7 +109,7 @@ exports.autologout = function(req, res, next) {
   if (req.session.user) { // Hay una sesión iniciada
 
     if (req.session.user.expireTime >= Date.now()) {
-      req.session.user.expireTime === Date.now() + sessionTimeout;
+      req.session.user.expireTime = Date.now() + sessionTimeout;
     }
     else {
       delete req.session.user;
