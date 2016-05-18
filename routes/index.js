@@ -17,8 +17,9 @@ router.get('/author', function(req, res, next) {
 });
 
 // Autoload de parámetros
-router.param('quizId', quizController.load);  // autoload :quizId
-router.param('userId', userController.load);  // autoload :userId
+router.param('quizId', quizController.load);  		// autoload :quizId
+router.param('userId', userController.load);  		// autoload :userId
+router.param('commentId', commentController.load);  // autoload :commentId
 
 
 // Definición de rutas de sesión
@@ -31,21 +32,35 @@ router.get('/users',                    userController.index);   // listado usua
 router.get('/users/:userId(\\d+)',      userController.show);    // ver un usuario
 router.get('/users/new',                userController.new);     // formulario sign in
 router.post('/users',                   userController.create);  // registrar usuario
-router.get('/users/:userId(\\d+)/edit', sessionController.loginRequired, userController.edit);    // editar información de cuenta
-router.put('/users/:userId(\\d+)',      sessionController.loginRequired, userController.update);  // actualizar información de cuenta
-router.delete('/users/:userId(\\d+)',   sessionController.loginRequired, userController.destroy); // borrar cuenta
+router.get('/users/:userId(\\d+)/edit', sessionController.loginRequired, 
+										userController.edit);    // editar información de cuenta
+router.put('/users/:userId(\\d+)',      sessionController.loginRequired, 
+										userController.update);  // actualizar información de cuenta
+router.delete('/users/:userId(\\d+)',   sessionController.loginRequired, 
+										userController.destroy); // borrar cuenta
 
 // Definición de rutas de /quizzes
 router.get('/quizzes.:format?',            		quizController.index);
 router.get('/quizzes/:quizId(\\d+).:format?',  	quizController.show);
 router.get('/quizzes/:quizId(\\d+)/check', 		quizController.check);
-router.get('/quizzes/new',                 		sessionController.loginRequired, quizController.new);
-router.post('/quizzes',                    		sessionController.loginRequired, quizController.create); 
-router.get('/quizzes/:quizId(\\d+)/edit',  		sessionController.loginRequired, quizController.edit);
-router.put('/quizzes/:quizId(\\d+)',       		sessionController.loginRequired, quizController.update);
-router.delete('/quizzes/:quizId(\\d+)',    		sessionController.loginRequired, quizController.destroy);
+router.get('/quizzes/new',                 		sessionController.loginRequired, 
+												quizController.new);
+router.post('/quizzes',                    		sessionController.loginRequired, 
+												quizController.create); 
+router.get('/quizzes/:quizId(\\d+)/edit',  		sessionController.loginRequired, 
+												quizController.edit);
+router.put('/quizzes/:quizId(\\d+)',       		sessionController.loginRequired, 
+												quizController.update);
+router.delete('/quizzes/:quizId(\\d+)',    		sessionController.loginRequired, 
+												quizController.destroy);
 
-router.get('/quizzes/:quizId(\\d+)/comments/new',  sessionController.loginRequired, commentController.new);
-router.post('/quizzes/:quizId(\\d+)/comments',     sessionController.loginRequired, commentController.create);
+// Definición de rutas de comentarios
+router.get('/quizzes/:quizId(\\d+)/comments/new',  sessionController.loginRequired, 
+	                                               commentController.new);
+router.post('/quizzes/:quizId(\\d+)/comments',     sessionController.loginRequired, 
+	                                               commentController.create);
+router.put('/quizzes/:quizId(\\d+)/comments/:commentId(\\d+)/accept', 
+	                                               sessionController.loginRequired, 
+	                                               commentController.accept);
 
 module.exports = router;
