@@ -4,7 +4,9 @@ module.exports = {
   up: function (queryInterface, Sequelize) {
       return  queryInterface.addColumn( 'Quizzes', 
                                         'AuthorId', 
-                                        { type: Sequelize.INTEGER } // Por defecto null
+                                        { type: Sequelize.INTEGER,
+                                          defaultValue: 0
+                                         }
                                       );
   },
 
