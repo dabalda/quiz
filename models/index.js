@@ -40,8 +40,13 @@ var Attachment = sequelize.import(path.join(__dirname,'attachment'));
 
 
 // Relaciones entre modelos
+// Relación 1 a N entre Quiz y Comment:
 Comment.belongsTo(Quiz);
 Quiz.hasMany(Comment);
+
+// Relación 1 a N entre User y Comment:
+User.hasMany(Comment, {foreignKey: 'AuthorId'});
+Comment.belongsTo(User, {as: 'Author', foreignKey: 'AuthorId'}); // Añade Author a comment en lugar de AuthorId
 
 // Relación 1 a N entre User y Quiz:
 User.hasMany(Quiz, {foreignKey: 'AuthorId'});

@@ -29,10 +29,12 @@ exports.new = function(req, res, next) {
 
 // POST /quizes/:quizId/comments
 exports.create = function(req, res, next) {
+  var authorId = req.session.user && req.session.user.id || 0;
   var comment = models.Comment.build(
-      { text:   req.body.comment.text,          
-        QuizId: req.quiz.id
-      });
+      							{ 	text:   req.body.comment.text,          
+        							QuizId: req.quiz.id,
+        							AuthorId: authorId
+      							});
 
   comment.save()
     .then(function(comment) {
