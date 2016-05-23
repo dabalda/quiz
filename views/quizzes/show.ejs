@@ -7,6 +7,18 @@
       <%= quiz.question %>
     </p>
 
+    <p>
+        <% if (quiz.AuthorId) {
+              if (quiz.Author) { %>
+                Creado por <a href="/users/<%= quiz.AuthorId %>"><%= quiz.Author.username %></a>
+          <% } else { %>
+                Usuario eliminado
+          <% } %>
+        <% } else { %>
+              Anónimo
+        <% } %>
+    </p>
+
     <% if (quiz.Attachment) { %>
       <img src="<%= quiz.Attachment.url %>" />
     <% } else { %> 
@@ -32,13 +44,36 @@
   <% for (var i in quiz.Comments) { 
        var comment = quiz.Comments[i];
        if (comment.accepted) { %>
-
-           <li> <%= comment.text %> </li>
+           <li> 
+           	<%= comment.text %> 
+           </li>
+           <p>
+   			<% if (comment.AuthorId) {
+            if (comment.Author) {%>
+      			 Por <a href="/users/<%= comment.AuthorId %>"><%= comment.Author.username %></a>
+          <% } else { %>
+                Usuario eliminado
+          <% } %>
+        <% } else { %>
+      			Anónimo
+   	 		<% } %>
+    	   </p>
 
        <% } else if (session.user &&
                      (session.user.isAdmin || (quiz.AuthorId === session.user.id))) { %>
 
            <li> <%= comment.text %> </li>
+           <p>
+   			<% if (comment.AuthorId) {
+            if (comment.Author) { %>
+      			 Por <a href="/users/<%= comment.AuthorId %>"><%= comment.Author.username %></a>
+          <% } else { %>
+                Usuario eliminado
+          <% } %>
+        <% } else { %>
+      			Anónimo
+   	 		<% } %>
+    	   </p>
 
            <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>/accept?_method=PUT">
               <button>Aceptar</button>

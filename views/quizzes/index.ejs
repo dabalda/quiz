@@ -15,6 +15,17 @@
         <td>
            <a href="/quizzes/<%= quizzes[i].id %>"><%= quizzes[i].question %></a>
         </td>
+        <td>
+        <% if (quizzes[i].AuthorId) {
+              if (quizzes[i].Author) { %>
+                Creado por <a href="/users/<%= quizzes[i].AuthorId %>"><%= quizzes[i].Author.username %></a>
+          <% } else { %>
+                Usuario eliminado
+          <% } %>
+        <% } else { %>
+              Anónimo
+        <% } %>
+        </td>
         <% if (session.user) { %>
           <% if (session.user.isAdmin || session.user.id === quizzes[i].AuthorId) { %>
             <td>
