@@ -16,10 +16,14 @@
            <a href="/quizzes/<%= quizzes[i].id %>"><%= quizzes[i].question %></a>
         </td>
         <td>
-        <% if (quizzes[i].AuthorId) {%>
-        Creado por <a href="/users/<%= quizzes[i].AuthorId %>"><%= quizzes[i].AuthorId %></a>
+        <% if (quizzes[i].AuthorId) {
+              if (quizzes[i].Author) { %>
+                Creado por <a href="/users/<%= quizzes[i].AuthorId %>"><%= quizzes[i].Author.username %></a>
+          <% } else { %>
+                Usuario eliminado
+          <% } %>
         <% } else { %>
-        Anónimo
+              Anónimo
         <% } %>
         </td>
         <% if (session.user) { %>

@@ -11,8 +11,11 @@ var cloudinary_image_options = { crop: 'limit', width: 200, height: 200, radius:
 
 // Autoload el quiz asociado a :quizId
 exports.load = function(req, res, next, quizId) {
-  models.Quiz.findById(quizId, {attributes: ['id', 'question', 'answer', 'AuthorId'],
-                                include: [ models.Comment, models.Attachment ] })
+  models.Quiz.findById(quizId, {attributes: ['id', 'question', 'answer', 'AuthorId'], include: [ 
+                                {model: models.Comment, include: [ 
+                                      {model: models.User, as: 'Author', attributes: ['username']}]}, 
+                                models.Attachment, 
+                                {model: models.User, as: 'Author', attributes: ['username']} ] })
       .then(function(quiz) {
           if (quiz) {
             req.quiz = quiz;
@@ -51,11 +54,11 @@ exports.index = function(req, res, next) {
 
     models.Quiz.findAll({where: ["question like ?", search_sql],
                         order: ['question'],
-                        include: [models.Attachment]})
+                        include: [models.Attachment, {model: models.User, as: 'Author', attributes: ['username']}]})
       .then(function(quizzes) {
         if (!req.params.format || req.params.format === "html") {
             res.render('quizzes/index.ejs', { quizzes: quizzes,
-                        search: search});
+                                              search: search});
         }
         else if (req.params.format === "json") {
           res.send(JSON.stringify(quizzes));
@@ -70,11 +73,11 @@ exports.index = function(req, res, next) {
       });
   }
   else {
-    models.Quiz.findAll({include: [models.Attachment]})
+    models.Quiz.findAll({include: [models.Attachment, {model: models.User, as: 'Author', attributes: ['username']}]})
       .then(function(quizzes) {
         if (!req.params.format || req.params.format === "html") {
             res.render('quizzes/index.ejs', { quizzes: quizzes,
-                        search: search});
+                                              search: search});
         }
         else if (req.params.format === "json") {
           res.send(JSON.stringify(quizzes));
