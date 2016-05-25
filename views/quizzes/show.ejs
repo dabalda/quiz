@@ -32,13 +32,13 @@
   </form>
 </p>
 
+<h2>Comentarios</h2>
+
 <% if (session.user) { %>
   <p>
     <a href="/quizzes/<%= quiz.id %>/comments/new"><button>Nuevo comentario</button></a>
   </p>
 <% } %>
-
-<p><strong>Comentarios:</strong></p>
 
 <ul>
   <% for (var i in quiz.Comments) { 

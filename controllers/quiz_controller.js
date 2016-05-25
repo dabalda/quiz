@@ -45,11 +45,49 @@ exports.ownershipRequired = function(req, res, next){
 
 
 // GET /quizzes.:format?
+// o /users/:userId/quizzes.:format?
 exports.index = function(req, res, next) {
+
+  var title = "Preguntas";
+  var options = {};
+  options.where = {};
+
+  options.include = [models.Attachment, {model: models.User, as: 'Author', attributes: ['username']}];
+
+  if (req.user) {
+  	title = "Mis preguntas";
+  	options.where.AuthorId = req.user.id;
+  }
 
   var search = req.query.search || '';
 
-  if (search !== "") {
+  if (search) {
+    search_sql = "%"+search.replace(/ /g, "%")+"%";
+  	options.where.question = {$like: search_sql};
+  	options.order = ['question'];
+  }
+
+  models.Quiz.findAll(options)
+    .then(function(quizzes) {
+      if (!req.params.format || req.params.format === "html") {
+          res.render('quizzes/index.ejs', { quizzes: quizzes,
+                                            search: search,
+                                            url: req.url,
+                                        	  title: title});
+      }
+      else if (req.params.format === "json") {
+        res.send(JSON.stringify(quizzes));
+      }
+      else {
+        throw new Error('No se admite format=' + req.params.format);
+      }
+    })
+    .catch(function(error) {
+      next(error);
+    });
+
+
+  /*if (search !== "") {
     search_sql = "%"+search.replace(/ /g, "%")+"%";
 
     models.Quiz.findAll({where: ["question like ?", search_sql],
@@ -89,7 +127,7 @@ exports.index = function(req, res, next) {
       .catch(function(error) {
         next(error);
       });
-  }
+  }*/
 };
 
 

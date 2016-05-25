@@ -1,4 +1,7 @@
-<form method="get" action="/quizzes">
+
+<h2> <%= title || "Quizzes" %> </h2>
+
+<form method="get" action=<%= url %>>
   <input type="text" name="search" value="<%= search %>" placeholder="Pregunta"></input>
   <input type="submit" value="Buscar">
 </form>
