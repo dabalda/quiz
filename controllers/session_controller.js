@@ -112,7 +112,7 @@ exports.create = function(req, res, next) {
               // Crear req.session.user y guardar campos id, username y expireTime
               // La sesión se define por la existencia de: req.session.user
               var expireTime = Date.now() + sessionTimeout;
-              req.session.user = {id:user.id, username:user.username, isAdmin:user.isAdmin, expireTime:expireTime};
+              req.session.user = {id:user.id, username:user.username, isAdmin:user.isAdmin, expireTime:expireTime, sessionTimeout: sessionTimeout};
 
               res.redirect(redir); // redirección a redir
             } else {
@@ -144,6 +144,7 @@ exports.autologout = function(req, res, next) {
 
     if (req.session.user.expireTime >= Date.now()) {
       req.session.user.expireTime = Date.now() + sessionTimeout;
+      req.session.user.sessionTimeout = sessionTimeout;
     }
     else {
       delete req.session.user;

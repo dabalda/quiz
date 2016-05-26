@@ -13,13 +13,34 @@
         type='text/css'
         media='only screen and (max-width: 480px)' 
         href='/stylesheets/smartphone.css' />
+
+  <% if (session.user){ %>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js" ></script>
+  <script type="text/javascript">
+    $(function(){
+
+      function refreshLogout(){
+        if (+$("#logoutTime").html() > 1){
+          $("#logoutTime").html($("#logoutTime").html()-1);
+        }
+        else {
+          clearInterval(t); 
+          t=undefined;
+          $("#logoutWarning").html("La sesión ha caducado.");
+          $("#session").css("color", "red");
+        }
+      };
+        t = setInterval(refreshLogout, 1000);   
+    });
+  </script>
+  <% } %>
 </head> 
 
 <body>
   <div id="page">
     <header class="main">
 
-      <div class="right">
+      <div id="session" class="right">
         <% if (!session.user) { %>
             <a href="/users/new">Registrarse</a> 
             <a href="/session">Iniciar sesión</a>
@@ -88,6 +109,11 @@
     	<a href="http://es.wikipedia.org/wiki/Quiz">
       	¿Qué es un Quiz?</a>
       	<a href="https://github.com/dabalda/quiz">Proyecto Quiz en GitHub</a>
+        <% if (session.user){ %>
+        <p id ="logoutWarning">La sesión se cerrará automáticamente en 
+        <b id ="logoutTime"><%= Math.floor(session.user.sessionTimeout/1000) %></b> 
+        segundos.</p>
+        <% } %>
   	</footer>
   </div>
 </body> 
