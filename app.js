@@ -12,6 +12,8 @@ var methodOverride = require('method-override');
 var routes = require('./routes/index');
 var sessionController = require('./controllers/session_controller');
 
+var bot = require('./bot');
+
 var app = express();
 
 // view engine setup
@@ -57,6 +59,12 @@ app.use(function(req, res, next) {
   res.locals.url = req.url;
    next();
 });
+
+// Telegram
+app.post('/' + bot.token, function (req, res) {
+    bot.processUpdate(req.body);
+    res.sendStatus(200);
+  });
 
 app.use('/', routes);
 

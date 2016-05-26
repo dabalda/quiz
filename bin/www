@@ -14,7 +14,6 @@ var options = {
   cert: fs.readFileSync('certs/quiz-cert.pem').toString()
 };
 
-
 /**
  * Get port from environment and store in Express.
  */
@@ -23,7 +22,7 @@ var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
- * Create HTTPS server.
+ * Create HTTP & HTTPS server.
  */
 
 var server = app.listen(app.get('port'), function() {
@@ -64,7 +63,7 @@ function normalizePort(val) {
 }
 
 /**
- * Event listener for HTTPS server "error" event.
+ * Event listener for HTTP server "error" event.
  */
 
 function onError(error) {
@@ -92,7 +91,7 @@ function onError(error) {
 }
 
 /**
- * Event listener for HTTPS server "listening" event.
+ * Event listener for HTTP server "listening" event.
  */
 
 function onListening() {
