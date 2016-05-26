@@ -72,8 +72,7 @@ exports.index = function(req, res, next) {
       if (!req.params.format || req.params.format === "html") {
           res.render('quizzes/index.ejs', { quizzes: quizzes,
                                             search: search,
-                                            url: req.url,
-                                        	  title: title});
+                                        	title: title});
       }
       else if (req.params.format === "json") {
         res.send(JSON.stringify(quizzes));
