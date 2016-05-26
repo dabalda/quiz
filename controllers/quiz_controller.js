@@ -72,7 +72,7 @@ exports.index = function(req, res, next) {
       if (!req.params.format || req.params.format === "html") {
           res.render('quizzes/index.ejs', { quizzes: quizzes,
                                             search: search,
-                                        	title: title});
+                                        	  title: title});
       }
       else if (req.params.format === "json") {
         res.send(JSON.stringify(quizzes));
@@ -290,6 +290,14 @@ exports.destroy = function(req, res, next) {
       req.flash('error', 'Error al editar el Quiz: '+error.message);
         next(error);
       });
+};
+
+// /lista_preguntas
+exports.indexTelegram = function() {
+
+  var options = {};
+
+  return models.Quiz.findAll(options);
 };
 
 // FUNCIONES AUXILIARES
