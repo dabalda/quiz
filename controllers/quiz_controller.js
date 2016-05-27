@@ -261,13 +261,13 @@ exports.indexTelegram = function(msg, match) {
   .then( function(quizzes) {
     var res = "";
     for (var q in quizzes){
-      res += (quizzes[q].question + "\n");
+      res += ("/pregunta_"+ quizzes[q].id + "\n" + quizzes[q].question + "\n");
     }
     bot.sendMessage(msg.chat.id, res);
   })
 };
 
-// /pregunta
+// /pregunta_quizId
 exports.showTelegram = function(msg, match) {
 
 	var quizId = match[1]
@@ -282,13 +282,13 @@ exports.showTelegram = function(msg, match) {
 	      .then(function(quiz) {
 	          if (quiz) {	
 	          	var res = "";
-	          	res += "Pregunta:\n"+quiz.question+"\n";
+
+	          	res = "Pregunta " + quiz.id + "\n"
 	          	if(quiz.Author){
 	          		res += "Autor:\n"+quiz.Author.username+"\n"
 	          	}
 
-	          	bot.sendMessage(msg.chat.id, res)
-	          	res = "Envíe su respuesta"
+	          	res = quiz.question+"\n";
 
 	          	var opts = {
  					reply_markup: JSON.stringify(
