@@ -1,14 +1,16 @@
 
 var Bot = require('node-telegram-bot-api');
-var token = '233169121:AAHGpkr0GiENxJ7AsUgfgxuyvOSjOf8EaRw';
+var token;
 var bot;
 var quizController = require('./controllers/quiz_controller');
 
 if(process.env.NODE_ENV === 'production') {
+  token = '233169121:AAHGpkr0GiENxJ7AsUgfgxuyvOSjOf8EaRw';
   bot = new Bot(token);
   bot.setWebHook('https://dbaldazo-quiz.herokuapp.com/' + bot.token);
 }
 else {
+  token = '189859026:AAGzUayW32Qhw3-C8OfBky5E8kGb5EOHdG8';
   bot = new Bot(token, { polling: true });
 }
 

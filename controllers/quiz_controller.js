@@ -13,7 +13,9 @@ var cloudinary_image_options = { crop: 'limit', width: 200, height: 200, radius:
 exports.load = function(req, res, next, quizId) {
   models.Quiz.findById(quizId, {attributes: ['id', 'question', 'answer', 'AuthorId'], include: [ 
                                 {model: models.Comment, include: [ 
-                                      {model: models.User, as: 'Author', attributes: ['username']}]}, 
+                                      {model: models.User, 
+                                       as: 'Author', 
+                                       attributes: ['username']}]}, 
                                 models.Attachment, 
                                 {model: models.User, as: 'Author', attributes: ['username']} ] })
       .then(function(quiz) {
@@ -75,7 +77,7 @@ exports.index = function(req, res, next) {
                                         	  title: title});
       }
       else if (req.params.format === "json") {
-        res.send(JSON.stringify(quizzes));
+        res.json(quizzes);
       }
       else {
         throw new Error('No se admite format=' + req.params.format);
@@ -84,49 +86,6 @@ exports.index = function(req, res, next) {
     .catch(function(error) {
       next(error);
     });
-
-
-  /*if (search !== "") {
-    search_sql = "%"+search.replace(/ /g, "%")+"%";
-
-    models.Quiz.findAll({where: ["question like ?", search_sql],
-                        order: ['question'],
-                        include: [models.Attachment, {model: models.User, as: 'Author', attributes: ['username']}]})
-      .then(function(quizzes) {
-        if (!req.params.format || req.params.format === "html") {
-            res.render('quizzes/index.ejs', { quizzes: quizzes,
-                                              search: search});
-        }
-        else if (req.params.format === "json") {
-          res.send(JSON.stringify(quizzes));
-        }
-        else {
-          throw new Error('No se admite format=' + req.params.format);
-        }
-
-      })
-      .catch(function(error) {
-        next(error);
-      });
-  }
-  else {
-    models.Quiz.findAll({include: [models.Attachment, {model: models.User, as: 'Author', attributes: ['username']}]})
-      .then(function(quizzes) {
-        if (!req.params.format || req.params.format === "html") {
-            res.render('quizzes/index.ejs', { quizzes: quizzes,
-                                              search: search});
-        }
-        else if (req.params.format === "json") {
-          res.send(JSON.stringify(quizzes));
-        }
-        else {
-          throw new Error('No se admite format=' + req.params.format);
-        }
-      })
-      .catch(function(error) {
-        next(error);
-      });
-  }*/
 };
 
 
@@ -139,7 +98,7 @@ exports.show = function(req, res, next) {
                   answer: answer});
   }
   else if (req.params.format === "json") {
-    res.send(JSON.stringify(req.quiz));
+    res.json(req.quiz);
   }
   else {
     throw new Error('No se admite format=' + req.params.format);
