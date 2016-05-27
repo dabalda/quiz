@@ -288,14 +288,16 @@ exports.showTelegram = function(msg, match) {
 	          		res += "Autor:\n"+quiz.Author.username+"\n"
 	          	}
 
+              bot.sendMessage(msg.chat.id, res)
+
 	          	res = quiz.question+"\n";
 
 	          	var opts = {
- 					reply_markup: JSON.stringify(
-    					{
+ 					      reply_markup: JSON.stringify(
+    					   {
       						force_reply: true
-    					}
-  				)};
+    					   }
+  				      )};
 
 	          	bot.sendMessage(msg.chat.id, res, opts).then( function (sent){
         			bot.onReplyToMessage(sent.chat.id, sent.message_id, function (message) {
