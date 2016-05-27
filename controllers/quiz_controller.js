@@ -3,6 +3,7 @@ var models = require('../models');
 var Sequelize = require('sequelize');
 var cloudinary = require('cloudinary');
 var fs = require('fs');
+var bot = require('../bot');
 
 // Opciones para imagenes subidas a Cloudinary
 var cloudinary_image_options = { crop: 'limit', width: 200, height: 200, radius: 5, 
@@ -251,12 +252,62 @@ exports.destroy = function(req, res, next) {
       });
 };
 
-// /lista_preguntas
-exports.indexTelegram = function() {
+// /preguntas
+exports.indexTelegram = function(msg, match) {
 
   var options = {};
 
-  return models.Quiz.findAll(options);
+  models.Quiz.findAll(options)
+  .then( function(quizzes) {
+    var res = "";
+    for (var q in quizzes){
+      res += (quizzes[q].question + "\n");
+    }
+    bot.sendMessage(msg.chat.id, res);
+  })
+};
+
+// /pregunta
+exports.showTelegram = function(msg, match) {
+
+	var quizId = match[1]
+
+	models.Quiz.findById(quizId, {attributes: ['id', 'question', 'answer', 'AuthorId'], include: [ 
+	                                {model: models.Comment, include: [ 
+	                                      {model: models.User, 
+	                                       as: 'Author', 
+	                                       attributes: ['username']}]}, 
+	                                models.Attachment, 
+	                                {model: models.User, as: 'Author', attributes: ['username']} ] })
+	      .then(function(quiz) {
+	          if (quiz) {	
+	          	var res = "";
+	          	res += "Pregunta:\n"+quiz.question+"\n";
+	          	if(quiz.Author){
+	          		res += "Autor:\n"+quiz.Author.username+"\n"
+	          	}
+
+	          	bot.sendMessage(msg.chat.id, res)
+	          	res = "Envíe su respuesta"
+
+	          	var opts = {
+ 					reply_markup: JSON.stringify(
+    					{
+      						force_reply: true
+    					}
+  				)};
+
+	          	bot.sendMessage(msg.chat.id, res, opts).then( function (sent){
+        			bot.onReplyToMessage(sent.chat.id, sent.message_id, function (message) {
+        				var answer = message.text;
+        				var result = answer === quiz.answer ? 'correcta' : 'incorrecta';
+          				bot.sendMessage(sent.chat.id, 'La respuesta "' + answer + '" es ' + result + ".");
+        			})
+	          	});
+	          } else { 
+	          	bot.sendMessage(msg.chat.id, "La pregunta "+quizId+" no existe.");
+	          }
+	        });
 };
 
 // FUNCIONES AUXILIARES
