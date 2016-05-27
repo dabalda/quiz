@@ -282,13 +282,13 @@ exports.showTelegram = function(msg, match) {
 	      .then(function(quiz) {
 	          if (quiz) {	
 	          	var res = "";
-	          	res += "Pregunta:\n"+quiz.question+"\n";
+
+	          	res = "Pregunta " + quiz.id + "\n"
 	          	if(quiz.Author){
 	          		res += "Autor:\n"+quiz.Author.username+"\n"
 	          	}
 
-	          	bot.sendMessage(msg.chat.id, res)
-	          	res = "Envíe su respuesta"
+	          	res = quiz.question+"\n";
 
 	          	var opts = {
  					reply_markup: JSON.stringify(
