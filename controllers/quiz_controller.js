@@ -261,13 +261,13 @@ exports.indexTelegram = function(msg, match) {
   .then( function(quizzes) {
     var res = "";
     for (var q in quizzes){
-      res += (quizzes[q].question + "\n");
+      res += ("/pregunta_"+ quizzes[q].id + "\n" + quizzes[q].question + "\n");
     }
     bot.sendMessage(msg.chat.id, res);
   })
 };
 
-// /pregunta
+// /pregunta_quizId
 exports.showTelegram = function(msg, match) {
 
 	var quizId = match[1]

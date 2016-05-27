@@ -32,7 +32,7 @@ bot.onText(/^\/preguntas$/, function (msg, match) {
 });
 
 // Comando pregunta
-bot.onText(/^\/pregunta (\d+)$/, function (msg, match) {
+bot.onText(/^\/pregunta_(\d+)$/, function (msg, match) {
     quizController.showTelegram(msg, match);
    
 });
