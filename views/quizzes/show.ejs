@@ -2,6 +2,7 @@
 <h2>Pregunta</h2>
 
 <p>
+  <%- include ../favourites/_stars.ejs %>
   <form method="get" action="/quizzes/<%= quiz.id %>/check">        
     <p>
       <%= quiz.question %>

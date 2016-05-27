@@ -40,6 +40,11 @@ nav a {
 .right {
   float: right;
 }
+.stars {
+  float: left;
+  clear: both;  
+}
+
 #flashinfo {
   width: 450px;
   border: 2px solid blue;

@@ -1,0 +1,29 @@
+<!-- 
+    Añadir la estrella adecuada al quiz pasado como parametro.
+
+    Dependiendo del valor del atributo favourite, la estrella es gris o amarilla.
+
+    Guardo en redir el URL de la pagina actual para volver a esta misma pagina 
+    despues de pulsar sobre una estrella.
+-->
+
+<% if (session.user) { %>
+
+    <% var method = quiz.favourite ? "delete" : "put";
+       var fill  = quiz.favourite ? "yellow" : "none";
+    %>
+
+    <form class="stars" method='post' 
+          action='/users/<%= session.user.id %>/favourites/<%= quiz.id %>?_method=<%= method %>'>
+
+          <input type='hidden' name='redir' value="<%= url || '' %>" >
+
+          <label>
+            <input type='submit' style="display: none" />
+          	<svg id="star" width="25" height="25" viewBox="0 0 51 48">
+            	<path id="star_path" fill="<%= fill %>" stroke="#999" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"/>
+          	</svg>
+          </label>
+    </form>
+
+<% } %>

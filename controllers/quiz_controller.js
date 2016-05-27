@@ -4,6 +4,7 @@ var Sequelize = require('sequelize');
 var cloudinary = require('cloudinary');
 var fs = require('fs');
 var bot = require('../bot');
+var url = require('url');
 
 // Opciones para imagenes subidas a Cloudinary
 var cloudinary_image_options = { crop: 'limit', width: 200, height: 200, radius: 5, 
@@ -22,12 +23,30 @@ exports.load = function(req, res, next, quizId) {
       .then(function(quiz) {
           if (quiz) {
             req.quiz = quiz;
-            next();
           } else { 
             throw new Error('No existe quizId=' + quizId);
           }
-        })
-        .catch(function(error) { next(error); });
+      })
+      .then(function() {
+        // Para usuarios logeados:
+        //   Si el quiz es uno de mis favoritos, creo un atributo llamado
+        //   "favourite" con el valor true.
+        if (req.session.user) {
+          req.quiz.getFans({where: {id: req.session.user.id}})
+            .then(function(fans) {
+                if (fans.length > 0) {
+                  req.quiz.favourite = true;
+                } 
+                next();    
+            })
+            .catch(function(error){
+              next(error);
+            });
+        } else {
+          next();
+        }
+      })
+      .catch(function(error) { next(error); });
 };
 
 
@@ -58,24 +77,42 @@ exports.index = function(req, res, next) {
   options.include = [models.Attachment, {model: models.User, as: 'Author', attributes: ['username']}];
 
   if (req.user) {
-  	title = "Mis preguntas";
-  	options.where.AuthorId = req.user.id;
+    title = "Mis preguntas";
+    options.where.AuthorId = req.user.id;
+  }
+
+  // Para usuarios logeados: incluir los fans de las preguntas.
+  if (req.session.user) {
+      options.include.push({ model: models.User, as: 'Fans' });
   }
 
   var search = req.query.search || '';
 
   if (search) {
     search_sql = "%"+search.replace(/ /g, "%")+"%";
-  	options.where.question = {$like: search_sql};
-  	options.order = ['question'];
+    options.where.question = {$like: search_sql};
+    options.order = ['question'];
   }
 
   models.Quiz.findAll(options)
     .then(function(quizzes) {
+
+      // Para usuarios logeados:
+      //   Añado a todos los quizzes un atributo booleano llamado "favourite"
+      //   que indica si el quiz es uno de mis favoritos o no. 
+      if (req.session.user) {
+
+          quizzes.forEach(function(quiz) { // Comprueba si algun fan es el logeado
+              quiz.favourite = quiz.Fans.some(function(fan) { 
+                  return fan.id == req.session.user.id;
+              });
+          });
+      } 
+
       if (!req.params.format || req.params.format === "html") {
           res.render('quizzes/index.ejs', { quizzes: quizzes,
                                             search: search,
-                                        	  title: title});
+                                            title: title});
       }
       else if (req.params.format === "json") {
         res.json(quizzes);
@@ -92,11 +129,12 @@ exports.index = function(req, res, next) {
 
 // GET /quizzes/:quizId.:format?
 exports.show = function(req, res, next) {
+
   if (!req.params.format || req.params.format === "html") {
     var answer = req.query.answer || '';
 
     res.render('quizzes/show', {quiz: req.quiz,
-                  answer: answer});
+                                answer: answer});
   }
   else if (req.params.format === "json") {
     res.json(req.quiz);
@@ -123,13 +161,21 @@ exports.check = function(req, res, next) {
 
 // GET /quizzes/new
 exports.new = function(req, res, next) {
+
+  // URL al que volver despues de crear un nuevo quiz.  
+  var redir = req.query.redir || 
+              url.parse(req.headers.referer || "/quizzes").pathname;
+
   var quiz = models.Quiz.build({question: "", answer: ""});
-  res.render('quizzes/new', {quiz: quiz});
+  res.render('quizzes/new', {quiz: quiz,
+                             redir:redir});
 };
 
 
 // POST /quizzes/create
 exports.create = function(req, res, next) {
+
+    var redir = req.body.redir || '/quizzes'
 
     var authorId = req.session.user && req.session.user.id || 0;
     var quiz = { question: req.body.question, 
@@ -156,7 +202,7 @@ exports.create = function(req, res, next) {
         });
     })
     .then(function() {
-        res.redirect('/quizzes');
+        res.redirect(redir);
     })
     .catch(Sequelize.ValidationError, function(error) {
         req.flash('error', 'Errores en el formulario:');
@@ -174,15 +220,22 @@ exports.create = function(req, res, next) {
 
 // GET /quizzes/:quizId/edit
 exports.edit = function(req, res, next) {
-  var quiz = req.quiz;  // req.quiz: autoload de instancia de quiz
+    // URL al que volver despues de editar el quiz.  
+    var redir = req.query.redir || 
+                url.parse(req.headers.referer || "/quizzes").pathname;
 
-  res.render('quizzes/edit', {quiz: quiz});
+    var quiz = req.quiz;  // req.quiz: autoload de instancia de quiz
+
+    res.render('quizzes/edit', {quiz: quiz,
+                                redir: redir});
 };
 
 
 
 // PUT /quizzes/:quizId
 exports.update = function(req, res, next) {
+
+  var redir = req.body.redir || '/quizzes'
 
   req.quiz.question = req.body.question;
   req.quiz.answer   = req.body.answer;
@@ -215,7 +268,7 @@ exports.update = function(req, res, next) {
         });
     })            
     .then(function() {
-        res.redirect('/quizzes');
+        res.redirect(redir);
     })
     .catch(Sequelize.ValidationError, function(error) {
 
@@ -236,6 +289,11 @@ exports.update = function(req, res, next) {
 // DELETE /quizzes/:quizId
 exports.destroy = function(req, res, next) {
 
+    // URL al que volver despues de borrar el quiz.  
+    var redir = req.query.redir || 
+                url.parse(req.headers.referer || "/quizzes").pathname;
+
+
     // Borrar la imagen de Cloudinary (Ignoro resultado)
     if (req.quiz.Attachment) {
         cloudinary.api.delete_resources(req.quiz.Attachment.public_id);
@@ -244,7 +302,7 @@ exports.destroy = function(req, res, next) {
     req.quiz.destroy()
       .then( function() {
       req.flash('success', 'Quiz borrado con éxito.');
-        res.redirect('/quizzes');
+        res.redirect(redir);
       })
       .catch(function(error){
       req.flash('error', 'Error al editar el Quiz: '+error.message);
@@ -270,46 +328,47 @@ exports.indexTelegram = function(msg, match) {
 // /pregunta_quizId
 exports.showTelegram = function(msg, match) {
 
-	var quizId = match[1]
+  var quizId = match[1]
 
-	models.Quiz.findById(quizId, {attributes: ['id', 'question', 'answer', 'AuthorId'], include: [ 
-	                                {model: models.Comment, include: [ 
-	                                      {model: models.User, 
-	                                       as: 'Author', 
-	                                       attributes: ['username']}]}, 
-	                                models.Attachment, 
-	                                {model: models.User, as: 'Author', attributes: ['username']} ] })
-	      .then(function(quiz) {
-	          if (quiz) {	
-	          	var res = "";
+  models.Quiz.findById(quizId, {attributes: ['id', 'question', 'answer', 'AuthorId'], include: [ 
+                                  {model: models.Comment, include: [ 
+                                        {model: models.User, 
+                                         as: 'Author', 
+                                         attributes: ['username']}]}, 
+                                  models.Attachment, 
+                                  {model: models.User, as: 'Author', attributes: ['username']} ] })
+        .then(function(quiz) {
+            if (quiz) { 
+              var res = "";
 
-	          	res = "Pregunta " + quiz.id + "\n"
-	          	if(quiz.Author){
-	          		res += "Autor:\n"+quiz.Author.username+"\n"
-	          	}
+              res = "Pregunta " + quiz.id + "\n"
+              if(quiz.Author){
+                res += "Autor:\n"+quiz.Author.username+"\n"
+              }
 
               bot.sendMessage(msg.chat.id, res)
 
-	          	res = quiz.question+"\n";
+              res = quiz.question+"\n";
 
-	          	var opts = {
- 					      reply_markup: JSON.stringify(
-    					   {
-      						force_reply: true
-    					   }
-  				      )};
+              var opts = {
+                reply_markup: JSON.stringify(
+                  {
+                    force_reply: true
+                  }
+                )
+              };
 
-	          	bot.sendMessage(msg.chat.id, res, opts).then( function (sent){
-        			bot.onReplyToMessage(sent.chat.id, sent.message_id, function (message) {
-        				var answer = message.text;
-        				var result = answer === quiz.answer ? 'correcta' : 'incorrecta';
-          				bot.sendMessage(sent.chat.id, 'La respuesta "' + answer + '" es ' + result + ".");
-        			})
-	          	});
-	          } else { 
-	          	bot.sendMessage(msg.chat.id, "La pregunta "+quizId+" no existe.");
-	          }
-	        });
+              bot.sendMessage(msg.chat.id, res, opts).then( function (sent){
+              bot.onReplyToMessage(sent.chat.id, sent.message_id, function (message) {
+                var answer = message.text;
+                var result = answer === quiz.answer ? 'correcta' : 'incorrecta';
+                  bot.sendMessage(sent.chat.id, 'La respuesta "' + answer + '" es ' + result + ".");
+              })
+              });
+            } else { 
+              bot.sendMessage(msg.chat.id, "La pregunta "+quizId+" no existe.");
+            }
+          });
 };
 
 // FUNCIONES AUXILIARES
