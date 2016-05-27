@@ -19,24 +19,22 @@ console.log("Servidor de bot de Telegram inicializado");
 
 
 
-// Comando di_hola (prueba)
-bot.onText(/^\/di_hola (.+)$/, function (msg, match) {
-  var name = match[1];
-  bot.sendMessage(msg.chat.id, '¡Hola, ' + name+'!');
+// Comando hola (prueba)
+bot.onText(/^\/hola (.+)$/, function (msg, match) {
+    var name = match[1];
+    bot.sendMessage(msg.chat.id, '¡Hola, ' + name+'!');
+
 });
 
-// Comando lista_preguntas
-bot.onText(/^\/lista_preguntas$/, function (msg, match) {
-  quizController.indexTelegram().then( function(quizzes) {
-    var res = "";
-    for (var q in quizzes){
-      res += (quizzes[q].question + "\n");
-    }
+// Comando preguntas
+bot.onText(/^\/preguntas$/, function (msg, match) {
+    quizController.indexTelegram(msg, match);
+});
 
-    bot.sendMessage(msg.chat.id, res);
-  })
-
-
+// Comando pregunta
+bot.onText(/^\/pregunta (\d+)$/, function (msg, match) {
+    quizController.showTelegram(msg, match);
+   
 });
 
 module.exports = bot;
