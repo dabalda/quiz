@@ -299,6 +299,15 @@ exports.destroy = function(req, res, next) {
         cloudinary.api.delete_resources(req.quiz.Attachment.public_id);
     }
 
+    models.Comment.findAll({where: {quizId: req.quiz.id}})
+      .then(function(comments) {
+          if (comments) {
+          	for (c in comments) {
+            	comments[c].destroy();
+          	}
+          }
+      });
+
     req.quiz.destroy()
       .then( function() {
       req.flash('success', 'Quiz borrado con éxito.');
