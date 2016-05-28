@@ -21,8 +21,8 @@ exports.load = function(req, res, next, commentId) {
 exports.new = function(req, res, next) {
   var comment = models.Comment.build({text: ""});
 
-  res.render('comments/new', { comment: comment, 
-  	                           quiz: req.quiz
+  res.render('comments/new', { comment:  comment,
+                               quiz:     req.quiz
   	                         });
 };
 
@@ -31,9 +31,9 @@ exports.new = function(req, res, next) {
 exports.create = function(req, res, next) {
   var authorId = req.session.user && req.session.user.id || 0;
   var comment = models.Comment.build(
-      							{ 	text:   req.body.comment.text,          
-        							QuizId: req.quiz.id,
-        							AuthorId: authorId
+      							{ text:      req.body.comment.text,          
+        							QuizId:    req.quiz.id,
+        							AuthorId:  authorId
       							});
 
   comment.save()
@@ -73,3 +73,22 @@ exports.accept = function(req, res, next) {
        next(error);
     });
   };
+
+// Estadísticas de comentarios
+exports.statistics = function(req, res, next) {
+  models.Comment.findAll({
+    attributes: [[Sequelize.fn('COUNT', Sequelize.col('id')), 'no_comments']]
+  })
+  .then(function(comment) {
+      if (comment) {
+        if (!req.statistics) {
+          req.statistics = {};
+        }
+        req.statistics.comment = comment;
+        next();
+      } else { 
+        next(new Error('comment no existe'));
+      }
+    })
+  .catch(function(error) { next(error); });
+};

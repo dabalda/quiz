@@ -371,6 +371,25 @@ exports.showTelegram = function(msg, match) {
           });
 };
 
+// Estadísticas de preguntas
+exports.statistics = function(req, res, next) {
+  models.Quiz.findAll({
+    attributes: [[Sequelize.fn('COUNT', Sequelize.col('id')), 'no_quizzes']]
+  })
+  .then(function(quiz) {
+      if (quiz) {
+        if (!req.statistics) {
+          req.statistics = {};
+        }
+        req.statistics.quiz = quiz;
+        next();
+      } else { 
+        next(new Error('quiz no existe'));
+      }
+    })
+  .catch(function(error) { next(error); });
+};
+
 // FUNCIONES AUXILIARES
 
 /**
