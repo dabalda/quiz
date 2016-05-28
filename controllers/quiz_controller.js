@@ -385,12 +385,12 @@ exports.statistics = function(req, res, next) {
   models.Quiz.findAll({
     attributes: [[Sequelize.fn('COUNT', Sequelize.col('id')), 'no_quizzes']]
   })
-  .then(function(quiz) {
-      if (quiz) {
+  .then(function(quizzes) {
+      if (quizzes) {
         if (!req.statistics) {
           req.statistics = {};
         }
-        req.statistics.quiz = quiz;
+        req.statistics.quizzes = quizzes[0].dataValues;
         next();
       } else { 
         next(new Error('quiz no existe'));

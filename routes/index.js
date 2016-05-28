@@ -99,10 +99,10 @@ router.delete('/users/:userId(\\d+)/favourites/:quizId(\\d+)',
                                                 favouriteController.del);
 
 // Definición de rutas de estadísticas
-router.get('/statistics',       commentController.statistics,
-                                quizController.statistics,
-								userController.statistics,
-								statisticsController.index);
+router.get('/statistics.:format?',      commentController.statistics,
+                                		quizController.statistics,
+										userController.statistics,
+										statisticsController.index);
 
 
 module.exports = router;

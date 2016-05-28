@@ -109,12 +109,12 @@ exports.statistics = function(req, res, next) {
   models.Comment.findAll({
     attributes: [[Sequelize.fn('COUNT', Sequelize.col('id')), 'no_comments']]
   })
-  .then(function(comment) {
-      if (comment) {
+  .then(function(comments) {
+      if (comments) {
         if (!req.statistics) {
           req.statistics = {};
         }
-        req.statistics.comment = comment;
+        req.statistics.comments = comments[0].dataValues;
         next();
       } else { 
         next(new Error('comment no existe'));

@@ -138,12 +138,12 @@ exports.statistics = function(req, res, next) {
   models.User.findAll({
     attributes: [[Sequelize.fn('COUNT', Sequelize.col('id')), 'no_users']]
   })
-  .then(function(user) {
-      if (user) {
+  .then(function(users) {
+      if (users) {
         if (!req.statistics) {
           req.statistics = {};
         }
-        req.statistics.user = user;
+        req.statistics.users = users[0].dataValues;
         next();
       } else { 
         next(new Error('user no existe'));

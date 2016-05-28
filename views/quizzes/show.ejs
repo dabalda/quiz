@@ -82,20 +82,19 @@
         <% } else { %>
       			Anónimo
    	 		<% } %>
-    	   </p>
-
            <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>/accept?_method=PUT">
               <button>Aceptar</button>
            </a>
            <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE">
               <button>Borrar</button>
            </a>
+          </p>
        <% } else if (session.user && (comment.AuthorId === session.user.id)) { %>
            <li> 
             <%= comment.text %> 
            </li>
            <p>
-             Tu comentario todavía no ha sido aprobado.
+             Su comentario todavía no ha sido aprobado.
              <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE">
                 <button>Borrar</button>
              </a>
