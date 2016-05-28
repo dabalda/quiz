@@ -1,0 +1,49 @@
+<!-- 
+    Añadir la estrella adecuada al quiz pasado como parametro.
+
+    Solo se muestra la estrella si hay usuario logueado.
+    Dependiendo del valor del atributo favourite, la estrella es gris o amarilla.
+    Se registra un onclick para enviar peticiones AJAX y modificar la estrella si OK.
+
+-->
+
+<% if (session.user) { %>
+
+    <% var fill  = quiz.favourite ? "yellow" : "none"; %>
+
+    <a href="">
+      <svg id="star<%= quiz.id %>" width="25" height="25" viewBox="0 0 51 48">
+          <path id="star_path<%= quiz.id %>" fill="<%= fill %>" stroke="#999" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"/>
+      </svg>
+    </a>
+
+
+    <script>
+        $(function() {
+            var state =  <%= !!quiz.favourite %>;
+            var userId = <%= session.user.id %>;
+            var quizId = <%= quiz.id %>;
+
+            var star = $("#star<%= quiz.id %>");
+            var path = $("#star_path<%= quiz.id %>");
+            star.click( function() {
+                var request = new XMLHttpRequest();
+                var method = state ? "DELETE" : "PUT";
+                var url = "/users/" + userId + "/favourites/" + quizId + "?_method=" + method;
+                request.open("POST", url);
+                request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+                request.onreadystatechange = function() {
+                    if (request.readyState === 4 && request.status === 200) {
+                        path.css( "fill", (state ? "none" : "yellow"));
+                        state = !state;
+                        $("#logoutTime").html(<%= Math.floor(session.user.sessionTimeout/1000) %>);
+
+                    }
+                };
+                request.send("");
+                return false; // Deshabilita el enlace
+            });
+        });
+    </script>
+
+<% } %>

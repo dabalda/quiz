@@ -132,3 +132,22 @@ exports.destroy = function(req, res, next) {
             next(error); 
         });
 };
+
+// Estadísticas de usuarios
+exports.statistics = function(req, res, next) {
+  models.User.findAll({
+    attributes: [[Sequelize.fn('COUNT', Sequelize.col('id')), 'no_users']]
+  })
+  .then(function(users) {
+      if (users) {
+        if (!req.statistics) {
+          req.statistics = {};
+        }
+        req.statistics.users = users[0].dataValues;
+        next();
+      } else { 
+        next(new Error('user no existe'));
+      }
+    })
+  .catch(function(error) { next(error); });
+};

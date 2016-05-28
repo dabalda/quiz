@@ -7,7 +7,11 @@
 </form>
 <table>
   <% for (var i in quizzes) { %>        
-     <tr>
+     <tr height="50px">
+        <td>
+          <% var quiz = quizzes[i]; %>      
+          <%- include ../favourites/_stars.ejs %>
+        </td>
         <td>
           <% if (quizzes[i].Attachment) { %>
              <img src="<%= quizzes[i].Attachment.url %>" width="50px" />
