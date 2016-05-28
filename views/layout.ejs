@@ -29,6 +29,8 @@
           t=undefined;
           $("#logoutWarning").html("La sesión ha caducado.");
           $("#session").css("color", "red");
+          $("#inOut").html("Iniciar sesión");
+          $("#inOut").css("href", "/session");
         }
       };
         t = setInterval(refreshLogout, 1000);   
@@ -48,7 +50,7 @@
         <% } else { %>
             <%= session.user.username %> 
             <a href="/users/<%= session.user.id %>">Perfil</a>
-            <a href="/session?_method=DELETE">Cerrar sesión</a>
+            <a id="inOut" href="/session?_method=DELETE">Cerrar sesión</a>
         <% } %>
       </div>
 

@@ -1,7 +1,7 @@
 
 var models = require('../models');
 
-// GET /users/userId/favourites
+// GET /users/:userId/favourites
 exports.index = function(req, res, next) {
     var options = {};
     options.where = {};
@@ -42,14 +42,17 @@ exports.index = function(req, res, next) {
 
 
 
-// PUT /users/userId/favourites/quizId
+// PUT /users/:userId/favourites/:quizId
 exports.add = function(req, res, next) {
-
-    var redir = req.body.redir || '/users/' + req.user.id + '/favourites';
 
     req.user.addFavourite(req.quiz)
         .then(function() {
-            res.redirect(redir);
+            if (req.xhr) {
+                res.send(200);
+            } else {
+                var redir = req.body.redir || '/users/' + req.user.id + '/favourites';
+                res.redirect(redir);
+            }
         })
         .catch(function(error) {
             next(error);
@@ -57,14 +60,17 @@ exports.add = function(req, res, next) {
 };
 
 
-// DELETE /users/userId/favourites/quizId
+// DELETE /users/:userId/favourites/:quizId
 exports.del = function(req, res, next) {
-
-    var redir = req.body.redir || '/users/' + req.user.id + '/favourites';
 
     req.user.removeFavourite(req.quiz)
         .then(function() {
-            res.redirect(redir);
+            if (req.xhr) {
+                res.send(200);
+            } else {
+                var redir = req.body.redir || '/users/' + req.user.id + '/favourites';
+                res.redirect(redir);
+            }
         })
         .catch(function(error) {
             next(error);

@@ -6,6 +6,7 @@ var url = require('url');
 
 var sessionTimeout = 2 * 60 * 1000 // Tiempo de expiración de sesión de usuario
 
+
 // Middleware: Se requiere hacer login.
 //
 // Si el usuario ya hizo login anteriormente entonces existirá 
