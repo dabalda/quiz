@@ -305,7 +305,7 @@ exports.destroy = function(req, res, next) {
         res.redirect(redir);
       })
       .catch(function(error){
-      req.flash('error', 'Error al editar el Quiz: '+error.message);
+      req.flash('error', 'Error al borrar el Quiz: '+error.message);
         next(error);
       });
 };

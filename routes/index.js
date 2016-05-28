@@ -81,6 +81,10 @@ router.put('/quizzes/:quizId(\\d+)/comments/:commentId(\\d+)/accept',
 	                                               sessionController.loginRequired,
 	                                               quizController.ownershipRequired,  
 	                                               commentController.accept);
+router.delete('/quizzes/:quizId(\\d+)/comments/:commentId(\\d+)', 
+	                                               sessionController.loginRequired,
+	                                               commentController.ownershipRequired,  
+	                                               commentController.destroy);
 
 // Definición de rutas de favoritos
 router.get('/users/:userId(\\d+)/favourites.:format?', 	

@@ -16,6 +16,22 @@ exports.load = function(req, res, next, commentId) {
         .catch(function(error) { next(error); });
 };
 
+// MW que permite acciones solamente si al usuario logeado es admin o es el autor del comentario o del quiz
+exports.ownershipRequired = function(req, res, next){
+
+    var isAdmin         = req.session.user.isAdmin;
+    var commentAuthorId = req.comment.AuthorId;
+    var quizAuthorId    = req.quiz.AuthorId;
+    var loggedUserId    = req.session.user.id;
+
+    if (isAdmin || quizAuthorId === loggedUserId || commentAuthorId === loggedUserId) {
+        next();
+    } else {
+      console.log('Operación prohibida: El usuario logeado no es el autor del comentario ni del quiz, ni un administrador.');
+      res.send(403);
+    }
+};
+
 
 // GET /quizzes/:quizId/comments/new
 exports.new = function(req, res, next) {
@@ -72,6 +88,20 @@ exports.accept = function(req, res, next) {
        req.flash('error', 'Error al aceptar un Comentario: '+error.message);
        next(error);
     });
+  };
+
+// DELETE /quizzes/:quizId/comments/:commentId
+exports.destroy = function(req, res, next) {
+
+    req.comment.destroy()
+      .then( function() {
+      req.flash('success', 'Comentario borrado con éxito.');
+        res.redirect('/quizzes/'+req.params.quizId);
+      })
+      .catch(function(error){
+      req.flash('error', 'Error al borrar el comentario: '+error.message);
+        next(error);
+      });
   };
 
 // Estadísticas de comentarios

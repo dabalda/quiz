@@ -58,6 +58,14 @@
         <% } else { %>
       			Anónimo
    	 		<% } %>
+        <% if (session.user && 
+                      (session.user.isAdmin || 
+                      (quiz.AuthorId === session.user.id) || 
+                      (comment.AuthorId === session.user.id))) { %>
+           <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE">
+              <button>Borrar</button>
+           </a>
+        <% } %>            
     	   </p>
 
        <% } else if (session.user &&
@@ -79,6 +87,19 @@
            <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>/accept?_method=PUT">
               <button>Aceptar</button>
            </a>
+           <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE">
+              <button>Borrar</button>
+           </a>
+       <% } else if (session.user && (comment.AuthorId === session.user.id)) { %>
+           <li> 
+            <%= comment.text %> 
+           </li>
+           <p>
+             Tu comentario todavía no ha sido aprobado.
+             <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE">
+                <button>Borrar</button>
+             </a>
+           </p>
        <% } %>
   <% } %>
 </ul>
