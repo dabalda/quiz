@@ -5,24 +5,27 @@
   <input type="text" name="search" value="<%= search %>" placeholder="Pregunta"></input>
   <input type="submit" value="Buscar">
 </form>
+<% if (quizzes.length === 0) { %>
+  <p>No se han encontrado preguntas.</p>  
+<% } %>
 <table>
   <% for (var i in quizzes) { %>        
-     <tr height="50px">
+     <tr>
         <td>
           <% var quiz = quizzes[i]; %>      
           <%- include ../favourites/_stars.ejs %>
         </td>
-        <td>
+        <td class="center">
           <% if (quizzes[i].Attachment) { %>
-             <img src="<%= quizzes[i].Attachment.url %>" width="50px" />
+             <img class="quizImage" src="<%= quizzes[i].Attachment.url %>"/>
           <% } else { %> 
-             <img src="/images/question.png" width="50px" />
+             <img class="quizImage" src="/images/question.png"/>
           <% } %> 
         </td>
         <td>
            <a href="/quizzes/<%= quizzes[i].id %>"><%= quizzes[i].question %></a>
         </td>
-        <td>
+        <td class="center">
         <% if (quizzes[i].AuthorId) {
               if (quizzes[i].Author) { %>
                 Creado por <a href="/users/<%= quizzes[i].AuthorId %>"><%= quizzes[i].Author.username %></a>

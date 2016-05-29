@@ -44,6 +44,13 @@ nav a {
   float: left;
   clear: both;  
 }
+.center {
+  text-align: center;
+}
+.quizImage {
+  height: 50px;
+  float: center;
+}
 
 #flashinfo {
   width: 450px;

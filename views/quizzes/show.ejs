@@ -2,30 +2,35 @@
 <h2>Pregunta</h2>
 
 <p>
-  <%- include ../favourites/_stars.ejs %>
-  <form method="get" action="/quizzes/<%= quiz.id %>/check">        
-    <p>
-      <%= quiz.question %>
-    </p>
+  <table>
+    <tr>
+      <td>
+        <%- include ../favourites/_stars.ejs %>  
+      </td>  
+      <td>  
+        <%= quiz.question %>
+        <p>
+            <% if (quiz.AuthorId) {
+                  if (quiz.Author) { %>
+                    Creado por <a href="/users/<%= quiz.AuthorId %>"><%= quiz.Author.username %></a>
+              <% } else { %>
+                    Usuario eliminado
+              <% } %>
+            <% } else { %>
+                  Anónimo
+            <% } %>        
+        </p>
+      </td>
+  </tr>
+  </table>
 
-    <p>
-        <% if (quiz.AuthorId) {
-              if (quiz.Author) { %>
-                Creado por <a href="/users/<%= quiz.AuthorId %>"><%= quiz.Author.username %></a>
-          <% } else { %>
-                Usuario eliminado
-          <% } %>
-        <% } else { %>
-              Anónimo
-        <% } %>
-    </p>
+  <% if (quiz.Attachment) { %>
+    <img src="<%= quiz.Attachment.url %>" />
+  <% } else { %> 
+    <img src="/images/question.png" width="50px" />
+  <% } %> 
 
-    <% if (quiz.Attachment) { %>
-      <img src="<%= quiz.Attachment.url %>" />
-    <% } else { %> 
-      <img src="/images/question.png" width="50px" />
-    <% } %> 
-
+  <form method="get" action="/quizzes/<%= quiz.id %>/check">  
     <p>
       <input type="text" name="answer" value="<%= answer %>" placeholder="Respuesta" />
       <input type="submit" value="Comprobar">
@@ -40,7 +45,9 @@
     <a href="/quizzes/<%= quiz.id %>/comments/new"><button>Nuevo comentario</button></a>
   </p>
 <% } %>
-
+<% if (quiz.Comments.length === 0) { %>
+  <p>Todavía no hay ningún comentario.</p>  
+  <% } %>
 <ul>
   <% for (var i in quiz.Comments) { 
        var comment = quiz.Comments[i];
