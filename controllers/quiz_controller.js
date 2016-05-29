@@ -167,12 +167,12 @@ exports.new = function(req, res, next) {
               url.parse(req.headers.referer || "/quizzes").pathname;
 
   var quiz = models.Quiz.build({question: "", answer: ""});
-  res.render('quizzes/new', {quiz: quiz,
-                             redir:redir});
+  res.render('quizzes/new', {quiz:  quiz,
+                             redir: redir});
 };
 
 
-// POST /quizzes/create
+// POST /quizzes
 exports.create = function(req, res, next) {
 
     var redir = req.body.redir || '/quizzes'
@@ -193,11 +193,9 @@ exports.create = function(req, res, next) {
         }    
 
         // Salvar la imagen en Cloudinary
-        console.log("Salvar la imagen en Cloudinary");
         return uploadResourceToCloudinary(req)
         .then(function(uploadResult) {
             // Crear nuevo attachment en la BBDD.
-            console.log("Crear attachment en BBDD");
             return createAttachment(req, uploadResult, quiz);
         });
     })
@@ -209,7 +207,8 @@ exports.create = function(req, res, next) {
         for (var i in error.errors) {
             req.flash('error', error.errors[i].value);
         };
-        res.render('quizzes/new', {quiz: quiz});
+        res.render('quizzes/new', {quiz: quiz,
+        						   redir: redir});
     })
     .catch(function(error) {
         req.flash('error', 'Error al crear un Quiz: '+error.message);
@@ -256,10 +255,8 @@ exports.update = function(req, res, next) {
         }  
 
         // Salvar la imagen nueva en Cloudinary
-        console.log("Salvar la nueva imagen en Cloudinary");
         return uploadResourceToCloudinary(req)
         .then(function(uploadResult) {
-            console.log("Actualizar el attachment en BBDD");
             // Actualizar el attachment en la BBDD.
             return updateAttachment(req, uploadResult, quiz);
         })
@@ -277,7 +274,8 @@ exports.update = function(req, res, next) {
           req.flash('error', error.errors[i].value);
       };
 
-      res.render('quizzes/edit', {quiz: req.quiz});
+      res.render('quizzes/edit', {quiz: req.quiz,
+      							  redir: redir});
     })
     .catch(function(error) {
       req.flash('error', 'Error al editar el Quiz: '+error.message);
@@ -299,14 +297,7 @@ exports.destroy = function(req, res, next) {
         cloudinary.api.delete_resources(req.quiz.Attachment.public_id);
     }
 
-    models.Comment.findAll({where: {quizId: req.quiz.id}})
-      .then(function(comments) {
-          if (comments) {
-          	for (c in comments) {
-            	comments[c].destroy();
-          	}
-          }
-      });
+    models.Comment.destroy({where: {QuizId: req.quiz.id}})
 
     req.quiz.destroy()
       .then( function() {
@@ -472,9 +463,7 @@ function updateAttachment(req, uploadResult, quiz) {
 function uploadResourceToCloudinary(req) {
     return new Promise(function(resolve,reject) {
         var path = req.file.path;
-        console.log(path);
         cloudinary.uploader.upload(path, function(result) {
-                console.log("En callback de cloudinary.uploader.upload")
                 fs.unlink(path); // borrar la imagen subida a ./uploads
                 if (! result.error) {
                     resolve({ public_id: result.public_id, url: result.secure_url });
