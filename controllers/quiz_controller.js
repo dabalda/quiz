@@ -89,7 +89,7 @@ exports.index = function(req, res, next) {
   var search = req.query.search || '';
 
   if (search) {
-    search_sql = "%"+search.replace(/ /g, "%")+"%";
+    search_sql = "%"+search.replace(/ /gi, "%")+"%";
     options.where.question = {$like: search_sql};
     options.order = ['question'];
   }
@@ -151,11 +151,11 @@ exports.check = function(req, res, next) {
 
   var answer = req.query.answer || "";
 
-  var result = answer === req.quiz.answer ? 'Correcta' : 'Incorrecta';
+  var result = answer.toLowerCase() === req.quiz.answer.toLowerCase() ? 'Correcta' : 'Incorrecta';
 
-  res.render('quizzes/result', { quiz: req.quiz, 
-                   result: result, 
-                   answer: answer });
+  res.render('quizzes/result', { quiz:   req.quiz, 
+                                 result: result, 
+                                 answer: answer });
 };
 
 
@@ -207,7 +207,7 @@ exports.create = function(req, res, next) {
         for (var i in error.errors) {
             req.flash('error', error.errors[i].value);
         };
-        res.render('quizzes/new', {quiz: quiz,
+        res.render('quizzes/new', {quiz:  quiz,
         						   redir: redir});
     })
     .catch(function(error) {
@@ -274,7 +274,7 @@ exports.update = function(req, res, next) {
           req.flash('error', error.errors[i].value);
       };
 
-      res.render('quizzes/edit', {quiz: req.quiz,
+      res.render('quizzes/edit', {quiz:  req.quiz,
       							  redir: redir});
     })
     .catch(function(error) {
