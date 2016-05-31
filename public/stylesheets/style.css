@@ -6,6 +6,34 @@ footer .row {
   background-color: white;
 }
 
+.quiz {
+  background-color: white;
+  margin: 5px;
+}
+
+.row-xs-flex-center {
+    display:flex;
+    align-items:center;
+}
+@media ( min-width:768px ) {
+    .row-sm-flex-center {
+        display:flex;
+        align-items:center;
+    }
+}
+@media ( min-width: 992px ) {
+    .row-md-flex-center {
+        display:flex;
+        align-items:center;
+    }
+}
+@media ( min-width: 1200px ) {
+    .row-lg-flex-center {
+        display:flex;
+        align-items:center;
+    }
+}
+
 .wrapper {  
   margin-top: 80px;
   margin-bottom: 80px;
@@ -32,5 +60,18 @@ footer .row {
   }
 }
 
+.stars {
+  float: left;
+  clear: both;  
+}
+.center {
+  text-align: center;
+}
+.quizImage {
+  height: 50px;
+  float: center;
+}
 
-   
+#logoutTime {
+  font-family: "Courier New", Courier, monospace;
+}
