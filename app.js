@@ -61,10 +61,12 @@ app.use(function(req, res, next) {
 });
 
 // Telegram
-app.post('/' + bot.token, function (req, res) {
-    bot.processUpdate(req.body);
-    res.sendStatus(200);
-  });
+if (process.env.BOT === "true") {
+  app.post('/' + bot.token, function (req, res) {
+      bot.processUpdate(req.body);
+      res.sendStatus(200);
+    });
+}
 
 app.use('/', routes);
 

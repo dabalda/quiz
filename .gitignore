@@ -3,3 +3,4 @@ npm-debug.log
 quiz.sqlite
 .env
 uploads
+certs
