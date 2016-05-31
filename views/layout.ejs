@@ -21,6 +21,8 @@
 
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 
+  <link rel="stylesheet" href="/stylesheets/style.css">
+
   <% if (session.user){ %>
   
   <script type="text/javascript">
@@ -170,9 +172,9 @@
           <% if (session.user){ %>
           <p id ="logoutWarning">La sesión se cerrará automáticamente en 
           <b id ="logoutTime"><%= Math.floor(session.user.sessionTimeout/1000) %></b> 
-          segundos.</p>
+          segundos</p>
           <% } else { %>
-          <p>No ha iniciado sesión.</p>
+          <p>No ha iniciado sesión</p>
           <% } %>	
           </div>  	
   	  </div>

@@ -1,141 +1,36 @@
-* { 
-	margin: 0; padding: 0; 
-}
-body { 
-	font: 16px Georgia, serif; 
-	color: white;
-}
-.page { 
-	margin: 2% auto; 
-	color: white;
-}
-.main { 
-	border: 1px solid #999; 
-	padding: 1%;
-    margin-bottom: 1px;
-    color: black;
-    background: #eee;
-}
-a { 
-	color: #00B7FF; 
-}
-section > div { 
-	padding: 20px; 
-}
-header { 
-	text-align: center;
-}
-nav { 
-	text-align: center;
-}
-section { 
-	text-align: left;
-}
-footer { 
-	text-align: center;
-}
-nav a { 
-	margin: 0px 10px 0px 0px;
-}
-.right {
-  float: right;
-}
-.stars {
-  float: left;
-  clear: both;  
-}
-.center {
-  text-align: center;
-}
-.quizImage {
-  height: 50px;
-  float: center;
+body {
+  background: #eee;  
 }
 
-#flashinfo {
-  width: 450px;
-  border: 2px solid blue;
-  padding: 7px;
-  padding-bottom: 0;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
-  color: #000; 
+footer .row {
+  background-color: white;
 }
 
-#flashinfo h3 {
-    text-align: left;
-    font-weight: bold;
-    padding: 5px 5px 5px 15px;
-    font-size: 12px;
-    margin: -7px;
-    margin-bottom: 0px;
-    background-color: #00c;
-    color: #ffffff; 
+.wrapper {  
+  margin-top: 80px;
+  margin-bottom: 80px;
 }
 
-#flashinfo ul li {
-    margin: 5px 5px 5px 15px;
-    font-size: 12px;
-    list-style: square; 
+.form-signin {
+  max-width: 380px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,0.1);  
+  }
+
+  input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  input[type="password"] {
+    margin-bottom: 20px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
 }
 
 
-#flashsuccess {
-  width: 450px;
-  border: 2px solid green;
-  padding: 7px;
-  padding-bottom: 0;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
-  color: #000; 
-}
-
-#flashsuccess h3 {
-    text-align: left;
-    font-weight: bold;
-    padding: 5px 5px 5px 15px;
-    font-size: 12px;
-    margin: -7px;
-    margin-bottom: 0px;
-    background-color: #0c0;
-}
-
-#flashsuccess ul li {
-    margin: 5px 5px 5px 15px;
-    font-size: 12px;
-    list-style: square; 
-}
-
-#flasherror {
-  width: 450px;
-  border: 2px solid red;
-  padding: 7px;
-  padding-bottom: 0;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
-  color: #000; 
-}
-
-#flasherror h3 {
-    text-align: left;
-    font-weight: bold;
-    padding: 5px 5px 5px 15px;
-    font-size: 12px;
-    margin: -7px;
-    margin-bottom: 0px;
-    background-color: #c00;
-}
-
-#flasherror ul li {
-    margin: 5px 5px 5px 15px;
-    font-size: 12px;
-    list-style: square;
-}
-
-#logoutWarning {
-  color: grey;
-}
-
-#logoutTime {
-  font-family: "Courier New", Courier, monospace;
-}
+   
