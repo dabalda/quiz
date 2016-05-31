@@ -7,12 +7,15 @@
 var app = require('../app');
 var debug = require('debug')('quiz:server');
 var fs = require("fs");
+var http = require('http');
 var https = require('https');
 
-var options = {
-  key: fs.readFileSync('certs/quiz-key.pem').toString(),
-  cert: fs.readFileSync('certs/quiz-cert.pem').toString()
-};
+if (app.get('env') === 'development') { // Igual que process.env.NODE_ENV
+  var options = {
+    key: fs.readFileSync('certs/quiz-key.pem').toString(),
+    cert: fs.readFileSync('certs/quiz-cert.pem').toString()
+  };
+}
 
 /**
  * Get port from environment and store in Express.
@@ -22,17 +25,20 @@ var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
- * Create HTTP & HTTPS server.
+ * Create HTTP server.
  */
 
-var server = app.listen(app.get('port'), function() {
-  debug('Express server listening on port '+ server.address().port);
-});
+var server = http.createServer(app);
 
-var serverSecure = https.createServer(options, app);
-serverSecure.listen(8443, function() {
-  debug('Express server listening on port '+ server.address().port);
-});
+/**
+ * Create HTTPS server.
+ */
+if (app.get('env') === 'development') {
+  var serverSecure = https.createServer(options, app);
+  serverSecure.listen(8443, function() {
+    debug('Express HTTPS server listening on port '+ server.address().port);
+  });
+}
 
 /**
  * Listen on provided port, on all network interfaces.
