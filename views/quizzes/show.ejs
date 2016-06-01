@@ -1,111 +1,125 @@
+<div class="row">
+  <h2>Pregunta</h2>
+</div>
+<div class="row">
+	<%- include ../favourites/_stars.ejs %>
+</div>
+<div class="row">
+  <blockquote>
+	<p><%= quiz.question %></p>
+  	<footer>
+  	  <% if (quiz.AuthorId) {
+      if (quiz.Author) { %>
+      <a href="/users/<%= quiz.AuthorId %>"><%= quiz.Author.username %></a>
+      <% } else { %>
+      Usuario eliminado
+      <% } %>
+      <% } else { %>
+      Anónimo
+      <% } %>
+  	</footer>
+  </blockquote>
+</div>
 
-<h2>Pregunta</h2>
+<% if (quiz.Attachment) { %>
+<div class="row quiz-img">
+  <img src="<%= quiz.Attachment.url %>" />
+</div>
+<% } %> 
 
-<p>
-  <table>
-    <tr>
-      <td>
-        <%- include ../favourites/_stars.ejs %>  
-      </td>  
-      <td>  
-        <%= quiz.question %>
-        <p>
-            <% if (quiz.AuthorId) {
-                  if (quiz.Author) { %>
-                    Creado por <a href="/users/<%= quiz.AuthorId %>"><%= quiz.Author.username %></a>
-              <% } else { %>
-                    Usuario eliminado
-              <% } %>
-            <% } else { %>
-                  Anónimo
-            <% } %>        
-        </p>
-      </td>
-  </tr>
-  </table>
-
-  <% if (quiz.Attachment) { %>
-    <img src="<%= quiz.Attachment.url %>" />
-  <% } else { %> 
-    <img src="/images/question.png" width="50px" />
-  <% } %> 
-
-  <form method="get" action="/quizzes/<%= quiz.id %>/check">  
-    <p>
-      <input type="text" name="answer" value="<%= answer %>" placeholder="Respuesta" />
-      <input type="submit" value="Comprobar">
-    </p>
+<div class="row">
+  <form role="form" class="form-signin" method="get" action="/quizzes/<%= quiz.id %>/check">  
+    <input type="text" class="form-control" name="answer" value="<%= answer %>" placeholder="Respuesta" required=""/>
+    <button type="submit" class="btn btn-block">Comprobar</button>
   </form>
-</p>
+</div>
 
-<h2>Comentarios</h2>
+<div class="row comments">
+  <div class="row">
+    <h2>Comentarios</h2>	
+  </div>
 
-<% if (session.user) { %>
-  <p>
-    <a href="/quizzes/<%= quiz.id %>/comments/new"><button>Nuevo comentario</button></a>
-  </p>
-<% } %>
-<% if (quiz.Comments.length === 0) { %>
-  <p>Todavía no hay ningún comentario.</p>  
+  <% if (session.user) { %>
+  <div class="row comments-new">
+    <a href="/quizzes/<%= quiz.id %>/comments/new" class="btn btn-primary" role="button">Nuevo comentario</a>
+  </div>
   <% } %>
-<ul>
-  <% for (var i in quiz.Comments) { 
-       var comment = quiz.Comments[i];
-       if (comment.accepted) { %>
-           <li> 
-           	<%= comment.text %> 
-           </li>
-           <p>
-   			<% if (comment.AuthorId) {
-            if (comment.Author) {%>
-      			 Por <a href="/users/<%= comment.AuthorId %>"><%= comment.Author.username %></a>
+  <div class="row">
+  <% if (quiz.Comments.length === 0) { %>
+    <p>Todavía no hay ningún comentario</p>  
+  <% } %>
+  <% for (var i in quiz.Comments) { %>
+    <% var comment = quiz.Comments[i];
+    if (comment.accepted) { %>
+    <div class="col-md-6 comment accepted-comment">
+        <div class="row">
+          <%= comment.text %> 
+        </div>
+        <div class="row">
+     			<% if (comment.AuthorId) {
+              if (comment.Author) {%>
+        			 Por <a href="/users/<%= comment.AuthorId %>"><%= comment.Author.username %></a>
+            <% } else { %>
+                  Usuario eliminado
+            <% } %>
           <% } else { %>
-                Usuario eliminado
-          <% } %>
-        <% } else { %>
-      			Anónimo
-   	 		<% } %>
-        <% if (session.user && 
-                      (session.user.isAdmin || 
-                      (quiz.AuthorId === session.user.id) || 
-                      (comment.AuthorId === session.user.id))) { %>
-           <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE">
-              <button>Borrar</button>
-           </a>
-        <% } %>            
-    	   </p>
-
-       <% } else if (session.user &&
-                     (session.user.isAdmin || (quiz.AuthorId === session.user.id))) { %>
-
-           <li> <%= comment.text %> </li>
-           <p>
-   			<% if (comment.AuthorId) {
-            if (comment.Author) { %>
-      			 Por <a href="/users/<%= comment.AuthorId %>"><%= comment.Author.username %></a>
-          <% } else { %>
-                Usuario eliminado
-          <% } %>
-        <% } else { %>
-      			Anónimo
-   	 		<% } %>
-           <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>/accept?_method=PUT">
-              <button>Aceptar</button>
-           </a>
-           <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE">
-              <button>Borrar</button>
-           </a>
-          </p>
-       <% } else if (session.user && (comment.AuthorId === session.user.id)) { %>
-           <li> 
-            <%= comment.text %> 
-           </li>
-           <p>
-             Su comentario todavía no ha sido aprobado.
-             <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE">
-                <button>Borrar</button>
+        			Anónimo
+     	 		<% } %>
+          </div>
+          <div class="row">
+          <% if (session.user && 
+                        (session.user.isAdmin || 
+                        (quiz.AuthorId === session.user.id) || 
+                        (comment.AuthorId === session.user.id))) { %>
+             <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE" class="btn btn-warning" role="button">
+                Borrar
              </a>
-           </p>
-       <% } %>
+          <% } %>            
+      	</div>
+    </div>
+    <% } else if (session.user &&
+                  (session.user.isAdmin || (quiz.AuthorId === session.user.id))) { %>
+    <div class="col-md-6 comment pending-comment">
+      <div class="row">
+        <%= comment.text %>     
+      </div>
+      <div class="row">
+     	<% if (comment.AuthorId) {
+        if (comment.Author) { %>
+        	Por <a href="/users/<%= comment.AuthorId %>"><%= comment.Author.username %></a>
+        <% } else { %>
+          Usuario eliminado
+        <% } %>
+      <% } else { %>
+        	Anónimo
+     	<% } %>
+      </div>
+      <div class="row">
+        <div class="btn-group">
+          <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>/accept?_method=PUT" class="btn btn-success" role="button">
+            Aceptar
+          </a>
+          <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE" class="btn btn-warning" role="button">
+            Borrar
+          </a>
+        </div>
+      </div>
+    </div>
+    <% } else if (session.user && (comment.AuthorId === session.user.id)) { %>
+    <div class="col-md-6 comment pending-comment">
+      <div class="row">  
+        <%= comment.text %> 
+      </div>
+      <div class="row"> 
+        Su comentario todavía no ha sido aprobado.
+      </div>
+      <div class="row"> 
+        <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE" class="btn btn-warning" role="button">
+          Borrar
+        </a>
+      </div>
+    </div>
+    <% } %>
   <% } %>
-</ul>
+  </div>
+</div>

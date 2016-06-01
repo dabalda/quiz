@@ -1,9 +1,9 @@
-<p>
-    Editar usuario:
-</p>
+<div class="wrapper">
+	<h2 class="form-heading">
+	  Editar usuario
+	</h2>
 
-<p>
-    <form method="post" action="/users/<%= user.id %>?_method=PUT" >      
-        <% include _form.ejs %>
-    </form>
-</p>
+	<form method="post" class="form-user" action="/users/<%= user.id %>?_method=PUT">      
+	  <% include _form.ejs %>
+	</form>
+</div>

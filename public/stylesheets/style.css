@@ -1,139 +1,149 @@
-* { 
-	margin: 0; padding: 0; 
+body {
+  background: #eee;  
 }
-body { 
-	font: 16px Georgia, serif; 
-	color: white;
+
+footer.container-fluid {
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-top: 40px;
 }
-.page { 
-	margin: 2% auto; 
-	color: white;
+
+footer .row {
+  background-color: grey;
+  color: white;
+  padding-top: 10px;
 }
-.main { 
-	border: 1px solid #999; 
-	padding: 1%;
-    margin-bottom: 1px;
-    color: black;
-    background: #eee;
+
+body > footer a {
+  color: white;
 }
-a { 
-	color: #00B7FF; 
+
+.row {
+  margin: 0px;
 }
-section > div { 
-	padding: 20px; 
+
+.navbar-top {
+  border-radius: 0px;
 }
-header { 
-	text-align: center;
+
+.quiz {
+  border-radius: 4px;
+  background-color: white;
+  margin: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px; 
 }
-nav { 
-	text-align: center;
+
+.user {
+  border-radius: 4px;
+  background-color: white;
+  margin: 5px;
+  height: 50px;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
-section { 
-	text-align: left;
+
+.me {
+  background-color: #f4fff4;
 }
-footer { 
-	text-align: center;
+
+.active-color a{
+  color: blue !important;
+
 }
-nav a { 
-	margin: 0px 10px 0px 0px;
+
+.comments {
+  background-color: #fff;
+  margin: 10px;
 }
-.right {
-  float: right;
+
+.comments-new {
+  margin-bottom: 10px;
 }
+
+.comment {
+  border-top: 1px;
+  border-top-style: solid;
+  padding: 10px;
+}
+
+.accepted-comment {
+  background-color: #f4fff4;
+}
+
+.pending-comment {
+  background-color: #fff4f4;
+}
+
+.new-comment {
+  margin-bottom: 20px;
+}
+
+.quiz-img img {
+  margin-bottom: 10px;
+}
+
+.row-xs-flex-center {
+    display:flex;
+    align-items:center;
+}
+@media ( min-width:768px ) {
+    .row-sm-flex-center {
+        display:flex;
+        align-items:center;
+    }
+}
+@media ( min-width: 992px ) {
+    .row-md-flex-center {
+        display:flex;
+        align-items:center;
+    }
+}
+@media ( min-width: 1200px ) {
+    .row-lg-flex-center {
+        display:flex;
+        align-items:center;
+    }
+}
+
+.wrapper {  
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+.form-signin, .form-question, .form-comment, .form-user {
+  max-width: 380px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,0.1);  
+}
+
+.form-question {
+  max-width: 600px;
+}
+
+.login-user {
+  margin-bottom: -1px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.login-password {
+  margin-bottom: 20px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+
 .stars {
   float: left;
   clear: both;  
 }
-.center {
-  text-align: center;
-}
+
 .quizImage {
   height: 50px;
   float: center;
-}
-
-#flashinfo {
-  width: 450px;
-  border: 2px solid blue;
-  padding: 7px;
-  padding-bottom: 0;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
-  color: #000; 
-}
-
-#flashinfo h3 {
-    text-align: left;
-    font-weight: bold;
-    padding: 5px 5px 5px 15px;
-    font-size: 12px;
-    margin: -7px;
-    margin-bottom: 0px;
-    background-color: #00c;
-    color: #ffffff; 
-}
-
-#flashinfo ul li {
-    margin: 5px 5px 5px 15px;
-    font-size: 12px;
-    list-style: square; 
-}
-
-
-#flashsuccess {
-  width: 450px;
-  border: 2px solid green;
-  padding: 7px;
-  padding-bottom: 0;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
-  color: #000; 
-}
-
-#flashsuccess h3 {
-    text-align: left;
-    font-weight: bold;
-    padding: 5px 5px 5px 15px;
-    font-size: 12px;
-    margin: -7px;
-    margin-bottom: 0px;
-    background-color: #0c0;
-}
-
-#flashsuccess ul li {
-    margin: 5px 5px 5px 15px;
-    font-size: 12px;
-    list-style: square; 
-}
-
-#flasherror {
-  width: 450px;
-  border: 2px solid red;
-  padding: 7px;
-  padding-bottom: 0;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
-  color: #000; 
-}
-
-#flasherror h3 {
-    text-align: left;
-    font-weight: bold;
-    padding: 5px 5px 5px 15px;
-    font-size: 12px;
-    margin: -7px;
-    margin-bottom: 0px;
-    background-color: #c00;
-}
-
-#flasherror ul li {
-    margin: 5px 5px 5px 15px;
-    font-size: 12px;
-    list-style: square;
-}
-
-#logoutWarning {
-  color: grey;
 }
 
 #logoutTime {

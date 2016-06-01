@@ -1,24 +1,10 @@
 
-<h2>Iniciar sesión</h2>
-
-<form method='POST' action='/session'>
-
-  <input type='hidden' name='redir' value='<%= redir %>'>
-
-  <div>
-    <label for="login">Nombre de usuario:</label>
-    <br />
-    <input type="text" id="login" name="login" size="30" />
-  </div>
-
-  <div>
-    <label for="password">Contraseña:</label>
-    <br />
-    <input type="password" id="password" name="password" size="30" />
-  </div>
-
-  <div>
-    <input name="commit" type="submit" value="Login" />
-  </div>
-
-</form>
+<div class="wrapper">
+  <form class="form-signin" method='POST' action='/session'>
+    <h2 class="form-signin-heading">Iniciar sesión</h2>
+    <input type='hidden' name='redir' value='<%= redir %>'>
+    <input type="text" id="login" class="form-control login-user" name="login" placeholder="Nombre de usuario" required="" autofocus="" size="30"/>
+    <input type="password" id="password" class="form-control login-password" name="password" placeholder="Contraseña" required="" autofocus="" size="30"/>
+    <button name="commit" type="submit" class="btn btn-lg btn-block">Enviar</button>
+  </form>
+</div>

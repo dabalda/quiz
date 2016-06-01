@@ -1,10 +1,10 @@
-<p>
-Añadir nuevo comentario: 
-</p>
 
-<p>
-    <form method="POST" action="/quizzes/<%=quiz.id%>/comments/">
-        <input type="text" id="comment" name="comment[text]" value="" placeholder="Comentario" /> <p>
-        <button type="submit">Enviar</button>
-    </form>
-</p>
+<div class="wrapper">
+  <form class="form-comment" method='POST' action="/quizzes/<%=quiz.id%>/comments/">
+    <h4 class="form-heading">Añadir nuevo comentario</h4>
+
+    <input type="text" type="text" id="comment" name="comment[text]" value="" placeholder="Comentario" class="form-control new-comment" required="" autofocus="" size="30"/>
+
+    <button type="submit" class="btn btn-lg btn-block">Enviar</button>
+  </form>
+</div>

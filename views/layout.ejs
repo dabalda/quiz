@@ -1,22 +1,39 @@
 <!DOCTYPE html>
+<html lang="es">
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="referrer" content="always" />
-  <title> Preguntas </title>
+  <title> Quiz </title>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" 
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" 
+  integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" 
+  crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" 
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" 
+  integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" 
+  crossorigin="anonymous">
+
+  <!-- jQuery library -->
+  <script type="text/javascript" 
+  src="https://code.jquery.com/jquery-2.2.4.min.js" ></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" 
+  integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" 
+  crossorigin="anonymous"></script>
+
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-  <link rel='stylesheet' href='/stylesheets/style.css' />
-  <link rel='stylesheet' 
-        type='text/css'
-        media='only screen and (min-width: 800px) and (min-device-width: 600px)'
-        href='/stylesheets/wide.css' />
-  <link rel='stylesheet'
-        type='text/css'
-        media='only screen and (max-width: 480px)' 
-        href='/stylesheets/smartphone.css' />
+
+  <link rel="stylesheet" href="/stylesheets/style.css">
 
   <% if (session.user){ %>
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js" ></script>
+  
   <script type="text/javascript">
     $(function(){
 
@@ -27,9 +44,9 @@
         else {
           clearInterval(t); 
           t=undefined;
-          $("#logoutWarning").html("La sesión ha caducado.");
-          $("#session").css("color", "red");
-          $("#inOut").html("Iniciar sesión");
+          $("#logoutWarning").html("La sesión ha caducado");
+          $("#username").css("color", "red");
+          $("#inOut").html('<span class="glyphicon glyphicon-log-in"></span>&nbsp;Iniciar sesión');
           $("#inOut").css("href", "/session");
         }
       };
@@ -40,86 +57,186 @@
 </head> 
 
 <body>
-  <div id="page">
-    <header class="main">
-
-      <div id="session" class="right">
-        <% if (!session.user) { %>
-            <a href="/users/new">Registrarse</a> 
-            <a href="/session">Iniciar sesión</a>
-        <% } else { %>
-            <%= session.user.username %> 
-            <a href="/users/<%= session.user.id %>">Perfil</a>
-            <a id="inOut" href="/session?_method=DELETE">Cerrar sesión</a>
-        <% } %>
-      </div>
-
-      <h2>Quiz<span class="no-narrow">: el juego de las preguntas</span></h2>
-    </header>
-
-      <nav class="main" role="navigation">
-        <a href="/">Inicio</a>
-        <a href="/quizzes">Preguntas</a>
-        <% if (session.user) { %>
-        <a href="/users/<%= session.user.id %>/quizzes">Mis Preguntas</a>
-        <a href="/users/<%=session.user.id%>/favourites">Mis Favoritos </a>
-        <% } %>
-        <a href="/users">Usuarios</a>
-        <a href="/statistics">Estadísticas</a>
-        <a href="/author">Autor</a>
-      </nav>
-      
-      <section>
-            <% if (messages.info) { %>
-               <article id='flashinfo'>
-                 <h3>Información de interés:</h3>
-                 <ul>
-                    <% for (var i in messages.info) { %>
-                      <li> <%= messages.info[i] %> </li>
-                    <% } %>
-                 </ul>
-               </article>
-            <% } %>
-
-            <% if (messages.success) { %>
-               <article id='flashsuccess'>
-                 <h3>Tareas completadas con éxito:</h3>
-                 <ul>
-                    <% for (var i in messages.success) { %>
-                       <li> <%= messages.success[i] %> </li>
-                    <% } %>
-                 </ul>
-               </article>
-            <% } %>
-
-            <% if (messages.error) { %>
-               <article id='flasherror'>
-                 <h3>Errores encontrados:</h3>
-                 <ul>
-                    <% for (var i in messages.error) { %>
-                      <li> <%= messages.error[i] %> </li>
-                    <% } %>
-                 </ul>
-               </article>
-            <% } %>
-       </section>
-
-      <section class="main">
-        <div>
-          <%- body %>
-        </div>
-      </section>
-
-  	<footer>
-    	<a href="http://es.wikipedia.org/wiki/Quiz">
-      	¿Qué es un Quiz?</a>
-      	<a href="https://github.com/dabalda/quiz">Proyecto Quiz en GitHub</a>
-        <% if (session.user){ %>
-        <p id ="logoutWarning">La sesión se cerrará automáticamente en 
-        <b id ="logoutTime"><%= Math.floor(session.user.sessionTimeout/1000) %></b> 
-        segundos.</p>
-        <% } %>
+    <nav class="navbar navbar-inverse navbar-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+      		<a class="navbar-brand" href="/">Quiz</a>
+    	  </div>
+      	  <% if (!session.user) { %>
+      	  <ul class="nav navbar-nav navbar-right">
+            <li><a href="/users/new">
+              <span class="glyphicon glyphicon-user"></span> 
+              &nbsp;Registrarse</a> 
+            </li>
+            <li><a href="/session">
+              <span class="glyphicon glyphicon-log-in"></span> 
+              &nbsp;Iniciar sesión</a>
+            </li>
+          </ul>
+          <% } else { %>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a id="username" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <span class="glyphicon glyphicon-user"></span>
+                &nbsp;<%= session.user.username %>
+              <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/users/<%= session.user.id %>">
+                  <span class="glyphicon glyphicon-home"></span>
+                  &nbsp;Perfil</a>
+                </li>
+                <li><a id="inOut" href="/session?_method=DELETE">
+                  <span class="glyphicon glyphicon-log-out"></span> 
+                  &nbsp;Cerrar sesión</a>
+                </li> 
+              </ul>
+            </li>     
+          </ul>
+          <% } %>
+      	</div>     
+    </nav>
+    <div class="container">
+      <div class="row">
+      	<div class="col-lg-2">
+      	  <div class="sidebar-nav small">
+            <div class="navbar navbar-default" role="navigation">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
+                  <span class="sr-only">Mostrar/Ocultar secciones</span>
+            	  <span class="icon-bar"></span>
+            	  <span class="icon-bar"></span>
+            	  <span class="icon-bar"></span>
+          		</button>
+          		<span class="visible-xs navbar-brand">Secciones</span>
+        	  </div>
+       	 	  <div class="navbar-collapse collapse sidebar-navbar-collapse">
+          		<ul class="nav navbar-nav">
+            	  <li 
+            	  <% if(url === "/") { %>
+            	  class="active-color "
+				  <% } %>
+            	  ><a href="/">
+                <span class="glyphicon glyphicon-home"></span>
+                &nbsp;Inicio
+                </a></li>
+            	  <li
+            	  <% if(url === "/quizzes") { %>
+            	  class="active-color"
+				  <% } %>
+            	  ><a href="/quizzes">
+                  <span class="glyphicon glyphicon-question-sign"></span> 
+                  &nbsp;Preguntas
+                </a></li>
+            	  <% if (session.user) { %>
+            	  <li
+            	  <% if(url === "/users/"+session.user.id+"/quizzes") { %>
+            	  class="active-color"
+				  <% } %>
+            	  ><a href="/users/<%= session.user.id %>/quizzes">
+                  <span class="glyphicon glyphicon-send"></span>
+                  &nbsp;Mis Preguntas
+                </a></li>
+            	  <li
+            	  <% if(url === "/users/"+session.user.id+"/favourites") { %>
+            	  class="active-color"
+				  <% } %>
+            	  ><a href="/users/<%=session.user.id%>/favourites">
+                  <span class="glyphicon glyphicon-star"></span>
+                  &nbsp;Mis Favoritos
+                </a></li>
+            	  <% } %>
+            	  <li
+            	  <% if(url === "/users") { %>
+            	  class="active-color"
+				  <% } %>
+            	  ><a href="/users">
+                  <span class="glyphicon glyphicon-user"></span>
+                  &nbsp;Usuarios
+                </a></li>
+            	  <li
+            	  <% if(url === "/statistics") { %>
+            	  class="active-color"
+				  <% } %>
+            	  ><a href="/statistics">
+                  <span class="glyphicon glyphicon-stats"></span>
+                  &nbsp;Estadísticas
+                </a></li>
+            	  <li
+            	  <% if(url === "/author") { %>
+            	  class="active-color"
+				  <% } %>
+            	  ><a href="/author">
+                  <span class="glyphicon glyphicon-info-sign"></span>
+                  &nbsp;Autor
+                </a></li>
+          		</ul>
+        	  </div>
+      		</div>
+    	  </div>
+      	</div>
+      	<div class="col-lg-10 text-center">
+      	  <div class="row">
+	        <% if (messages.info) { %>
+	          <div class="alert alert-info">
+	            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	            <h3>Información de interés:</h3>
+	            <% for (var i in messages.info) { %>            
+	            <div class="alert"> 
+	              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	               <%= messages.info[i] %> 
+	            </div>
+	            <% } %>
+	          </div>
+	        <% } %>
+	        <% if (messages.success) { %>
+	          <div class="alert alert-success">
+	            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	            <h3>Tareas completadas con éxito:</h3>
+	            <% for (var i in messages.success) { %>            
+	            <div class="alert"> 
+	              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	               <%= messages.success[i] %> 
+	            </div>
+	            <% } %>
+	          </div>
+	        <% } %>
+	        <% if (messages.error) { %>
+	          <div class="alert alert-danger">
+	            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	            <h3>Errores encontrados:</h3>
+	            <% for (var i in messages.error) { %>            
+	            <div class="alert"> 
+	              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	               <%= messages.error[i] %> 
+	            </div>
+	            <% } %>
+	          </div>
+	        <% } %>
+      	  </div>
+	        <div class="row">
+	          <%- body %>
+	        </div>
+      	</div>
+      </div>   
+    </div>
+  	<footer class="container-fluid text-center">
+  	  <div class="row">
+  	    <div class="col-sm-6">
+          <p><a href="http://es.wikipedia.org/wiki/Quiz">¿Qué es un Quiz?</a></p>
+      	  <p><a href="https://github.com/dabalda/quiz">Proyecto Quiz en GitHub</a></p>
+      	</div>
+      	<div class="col-sm-6">
+          <% if (session.user){ %>
+          <p id ="logoutWarning">La sesión se cerrará automáticamente en 
+          <b id ="logoutTime"><%= Math.floor(session.user.sessionTimeout/1000) %></b> 
+          segundos</p>
+          <% } else { %>
+          <p>No ha iniciado sesión</p>
+          <% } %>
+          <% var bot = (process.env.BOT === "true") ? "encendido" : "apagado"; %>
+          <p>El Bot de Telegram está <%= bot %> en este momento</p>
+          </div>  	
+  	  </div>
   	</footer>
-  </div>
 </body> 
 </html>

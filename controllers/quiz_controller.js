@@ -151,7 +151,7 @@ exports.check = function(req, res, next) {
 
   var answer = req.query.answer || "";
 
-  var result = answer.toLowerCase() === req.quiz.answer.toLowerCase() ? 'Correcta' : 'Incorrecta';
+  var result = answer.toLowerCase() === req.quiz.answer.toLowerCase() ? 'correcta' : 'incorrecta';
 
   res.render('quizzes/result', { quiz:   req.quiz, 
                                  result: result, 

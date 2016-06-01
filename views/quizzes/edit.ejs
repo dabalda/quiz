@@ -1,9 +1,9 @@
-<p>
-Edite la pregunta
-</p>
+<div class="wrapper">
+	<h2 class="form-heading">
+	  Editar la pregunta 
+	</h2>
 
-<p>
-  <form method="post" action="/quizzes/<%= quiz.id %>?_method=PUT" enctype="multipart/form-data">      
-     <% include _form.ejs %>
-  </form>
-</p>
+	<form method="post" class="form-question" action="/quizzes/<%= quiz.id %>?_method=PUT" enctype="multipart/form-data">      
+	  <% include _form.ejs %>
+	</form>
+</div>
