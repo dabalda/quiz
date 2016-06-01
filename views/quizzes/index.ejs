@@ -1,20 +1,22 @@
 <div class="row">
-	<div class="col-sm-4">
+	<div class="col-sm-<%= session.user ? '6' : '9' %> text-left">
 	  <h2> <%= title || "Quizzes" %> </h2>
 	</div>
+	<div class ="col-sm-3">
+	  <form role="form" method="get" action=<%= url %>>
+	    <div class="input-group">
+	      <input type="text" class="form-control" name="search" value="<%= search %>" placeholder="Pregunta" size="10px"></input>
+	      <span class="input-group-btn">
+	        <button type="submit" class="btn btn-default">Buscar</button>
+	      </span>
+	    </div>
+	  </form>
+	</div>
 	<% if (session.user) { %>
-	<div class="col-sm-4">
+	<div class="col-sm-3">
 	    <a href="/quizzes/new" class="btn btn-primary" role="button">Crear pregunta</a>
 	</div>
-	<div class ="col-sm-4">
-	<% } else { %>
-	<div class ="col-sm-8">
-	<% } %>
-	  <form role="form" method="get" action=<%= url %>>
-	    <input type="text" class="form-control" name="search" value="<%= search %>" placeholder="Pregunta"></input>
-	    <button type="submit" class="btn btn-block">Buscar</button>
-	  </form>
-	</div>	
+	<% } %>	
 </div>
 
 
@@ -23,7 +25,7 @@
 	  <p>No se han encontrado preguntas</p>  
 	<% } %>
 		  <% for (var i in quizzes) { %>        
-		     <div class="row quiz row-sm-flex-center">
+		     <div class="row quiz row-sm-flex-center <% if (session.user && session.user.id === quizzes[i].AuthorId) { %>me<% } %>">
 		        <div class="col-sm-1">
 		          <% var quiz = quizzes[i]; %>      
 		          <%- include ../favourites/_stars.ejs %>

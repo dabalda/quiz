@@ -2,13 +2,28 @@ body {
   background: #eee;  
 }
 
+footer.container-fluid {
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-top: 40px;
+}
+
 footer .row {
   background-color: grey;
   color: white;
+  padding-top: 10px;
 }
 
 body > footer a {
   color: white;
+}
+
+.row {
+  margin: 0px;
+}
+
+.navbar-top {
+  border-radius: 0px;
 }
 
 .quiz {
@@ -26,6 +41,42 @@ body > footer a {
   height: 50px;
   padding-top: 3px;
   padding-bottom: 3px;
+}
+
+.me {
+  background-color: #f4fff4;
+}
+
+.active-color a{
+  color: blue !important;
+
+}
+
+.comments {
+  background-color: #fff;
+  margin: 10px;
+}
+
+.comments-new {
+  margin-bottom: 10px;
+}
+
+.comment {
+  border-top: 1px;
+  border-top-style: solid;
+  padding: 10px;
+}
+
+.accepted-comment {
+  background-color: #f4fff4;
+}
+
+.pending-comment {
+  background-color: #fff4f4;
+}
+
+.new-comment {
+  margin-bottom: 20px;
 }
 
 .quiz-img img {
@@ -60,26 +111,30 @@ body > footer a {
   margin-bottom: 80px;
 }
 
-.form-signin {
+.form-signin, .form-question, .form-comment, .form-user {
   max-width: 380px;
   padding: 15px 35px 45px;
   margin: 0 auto;
   background-color: #fff;
   border: 1px solid rgba(0,0,0,0.1);  
-  }
-
-  input[type="text"] {
-    margin-bottom: -1px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  input[type="password"] {
-    margin-bottom: 20px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
 }
+
+.form-question {
+  max-width: 600px;
+}
+
+.login-user {
+  margin-bottom: -1px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.login-password {
+  margin-bottom: 20px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
 
 .stars {
   float: left;

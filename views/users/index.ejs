@@ -1,12 +1,16 @@
 <div class="row">
-  <h2> Usuarios </h2>  
-</div>
-<div class="row">
-  
+  <div class="col-sm-<%= session.user ? '6' : '12' %> text-left">
+    <h2> Usuarios </h2>
+  </div>
+  <% if (session.user) { %>
+  <div class="col-sm-6">
+    <a href="/users/new" class="btn btn-primary" role="button">Crear usuario</a>
+  </div>
+  <% } %> 
 </div>
 <div class="row">
   <% for (var i in users) { %>
-  <div class="row user row-sm-flex-center">   
+  <div class="row user row-sm-flex-center <% if (session.user && session.user.id === users[i].id) { %>me<% } %>">   
     <div class="col-sm-6"> 
       <a href="/users/<%= users[i].id %>" ><%= users[i].username %></a>
       <%= users[i].isAdmin ? "(admin)" : "" %>
@@ -30,9 +34,3 @@
   </div>
   <%  }; %>
 </div>
-
-<% if (session.user) { %>
-<div class="row">
-  <a href="/users/new"><button type="button">Crear usuario</button></a>
-</div>
-<% }; %>

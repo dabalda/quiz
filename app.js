@@ -53,11 +53,11 @@ app.use(sessionController.autologout);
 // Helper dinámico:
 app.use(function(req, res, next) {
 
-   // Hacer visible req.session en las vistas
-   res.locals.session = req.session;
+  // Hacer visible req.session en las vistas
+  res.locals.session = req.session;
   // Hacer visible req.url en las vistas
   res.locals.url = req.url;
-   next();
+  next();
 });
 
 // Telegram

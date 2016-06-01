@@ -17,30 +17,27 @@
    }
 </script>
 
-<div>
-	<% if ( ! user.id) { %>
+<% if ( ! user.id) { %>
+   <div class="form-group">   
 		<label for="preg" class="rem">Nombre de usuario:</label>
-		<input type="text" id="username" name="user[username]" value="<%= user.username %>"/><p>
-	<% } else { %>
-		Nombre de usuario: <%= user.username %>
-	<% } %>
-</div>
+		<input type="text" class="form-control" id="username" name="user[username]" value="<%= user.username %>"/>
+   </div>
+<% } else { %>
+	<h4>Nombre de usuario: <%= user.username %></h4>
+<% } %>
 
-<div>
+<div class="form-group"> 
 	<label for="user_password" class="rem">Contraseña:</label>
-	<input type="password" id="user_password" name="user[password]"/> <p>
+	<input type="password" class="form-control" id="user_password" name="user[password]"/> <p>
 </div>
 
-<div>
+<div class="form-group"> 
 	<label for="user_confirm_password" class="rem">Confirmar Contraseña:</label>
-	<input type="password" id="user_confirm_password" /> <p>
+	<input type="password" class="form-control" id="user_confirm_password" /> <p>
 </div>
 
 
-<div>
-	<a href="/"><button type="button">Cancelar</button></a>
-</div>
-
-<div>
-	<input type="submit" value="Guardar" onclick="return confirmPassword()">
+<div class="btn-group">
+	<a href="/" class="btn btn-warning" role="button">Cancelar</a>
+   <input class="btn btn-success" type="submit" value="Guardar" onclick="return confirmPassword()">	
 </div>
