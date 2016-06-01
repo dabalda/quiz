@@ -373,20 +373,11 @@ exports.showTelegram = function(msg, match) {
 
 // Estadísticas de preguntas
 exports.statistics = function(req, res, next) {
-  models.Quiz.findAll({
-    attributes: [[Sequelize.fn('COUNT', Sequelize.col('id')), 'no_quizzes']]
+  models.Quiz.count()
+  .then(function(count) {
+      req.no_quizzes = count;
+      next();
   })
-  .then(function(quizzes) {
-      if (quizzes) {
-        if (!req.statistics) {
-          req.statistics = {};
-        }
-        req.statistics.quizzes = quizzes[0].dataValues;
-        next();
-      } else { 
-        next(new Error('quiz no existe'));
-      }
-    })
   .catch(function(error) { next(error); });
 };
 

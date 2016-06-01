@@ -135,19 +135,10 @@ exports.destroy = function(req, res, next) {
 
 // Estadísticas de usuarios
 exports.statistics = function(req, res, next) {
-  models.User.findAll({
-    attributes: [[Sequelize.fn('COUNT', Sequelize.col('id')), 'no_users']]
+  models.User.count()
+  .then(function(count) {
+      req.no_users = count;
+      next();
   })
-  .then(function(users) {
-      if (users) {
-        if (!req.statistics) {
-          req.statistics = {};
-        }
-        req.statistics.users = users[0].dataValues;
-        next();
-      } else { 
-        next(new Error('user no existe'));
-      }
-    })
   .catch(function(error) { next(error); });
 };
