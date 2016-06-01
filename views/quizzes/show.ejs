@@ -1,60 +1,57 @@
+<div class="row">
+  <h2>Pregunta</h2>
+</div>
+<div class="row">
+	<%- include ../favourites/_stars.ejs %>
+</div>
+<div class="row">
+  <blockquote>
+	<p><%= quiz.question %></p>
+  	<footer>
+  	  <% if (quiz.AuthorId) {
+      if (quiz.Author) { %>
+      <a href="/users/<%= quiz.AuthorId %>"><%= quiz.Author.username %></a>
+      <% } else { %>
+      Usuario eliminado
+      <% } %>
+      <% } else { %>
+      Anónimo
+      <% } %>
+  	</footer>
+  </blockquote>
+</div>
 
-<h2>Pregunta</h2>
+<% if (quiz.Attachment) { %>
+<div class="row quiz-img">
+  <img src="<%= quiz.Attachment.url %>" />
+</div>
+<% } %> 
 
-<p>
-  <table>
-    <tr>
-      <td>
-        <%- include ../favourites/_stars.ejs %>  
-      </td>  
-      <td>  
-        <%= quiz.question %>
-        <p>
-            <% if (quiz.AuthorId) {
-                  if (quiz.Author) { %>
-                    Creado por <a href="/users/<%= quiz.AuthorId %>"><%= quiz.Author.username %></a>
-              <% } else { %>
-                    Usuario eliminado
-              <% } %>
-            <% } else { %>
-                  Anónimo
-            <% } %>        
-        </p>
-      </td>
-  </tr>
-  </table>
-
-  <% if (quiz.Attachment) { %>
-    <img src="<%= quiz.Attachment.url %>" />
-  <% } else { %> 
-    <img src="/images/question.png" width="50px" />
-  <% } %> 
-
-  <form method="get" action="/quizzes/<%= quiz.id %>/check">  
-    <p>
-      <input type="text" name="answer" value="<%= answer %>" placeholder="Respuesta" />
-      <input type="submit" value="Comprobar">
-    </p>
+<div class="row">
+  <form role="form" class="form-signin" method="get" action="/quizzes/<%= quiz.id %>/check">  
+    <input type="text" class="form-control" name="answer" value="<%= answer %>" placeholder="Respuesta" required=""/>
+    <button type="submit" class="btn btn-block">Comprobar</button>
   </form>
-</p>
+</div>
 
-<h2>Comentarios</h2>
+<div class="row">
+  <h2>Comentarios</h2>	
+</div>
 
 <% if (session.user) { %>
-  <p>
-    <a href="/quizzes/<%= quiz.id %>/comments/new"><button>Nuevo comentario</button></a>
-  </p>
+<div class="row">
+  <a href="/quizzes/<%= quiz.id %>/comments/new"><button>Nuevo comentario</button></a>
+</div>
 <% } %>
+<div class="row">
 <% if (quiz.Comments.length === 0) { %>
-  <p>Todavía no hay ningún comentario.</p>  
-  <% } %>
-<ul>
-  <% for (var i in quiz.Comments) { 
-       var comment = quiz.Comments[i];
-       if (comment.accepted) { %>
-           <li> 
-           	<%= comment.text %> 
-           </li>
+  <p>Todavía no hay ningún comentario</p>  
+<% } %>
+<% for (var i in quiz.Comments) { %>
+  <div class="row">
+      <% var comment = quiz.Comments[i];
+      if (comment.accepted) { %>
+        <%= comment.text %> 
            <p>
    			<% if (comment.AuthorId) {
             if (comment.Author) {%>
@@ -107,5 +104,6 @@
              </a>
            </p>
        <% } %>
-  <% } %>
-</ul>
+  </div>
+<% } %>
+</div>

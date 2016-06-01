@@ -3,12 +3,33 @@ body {
 }
 
 footer .row {
-  background-color: white;
+  background-color: grey;
+  color: white;
+}
+
+body > footer a {
+  color: white;
 }
 
 .quiz {
+  border-radius: 4px;
   background-color: white;
   margin: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px; 
+}
+
+.user {
+  border-radius: 4px;
+  background-color: white;
+  margin: 5px;
+  height: 50px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.quiz-img img {
+  margin-bottom: 10px;
 }
 
 .row-xs-flex-center {
@@ -64,9 +85,7 @@ footer .row {
   float: left;
   clear: both;  
 }
-.center {
-  text-align: center;
-}
+
 .quizImage {
   height: 50px;
   float: center;

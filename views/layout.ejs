@@ -8,16 +8,25 @@
   <title> Quiz </title>
 
   <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" 
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" 
+  integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" 
+  crossorigin="anonymous">
 
   <!-- Optional theme -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+  <link rel="stylesheet" 
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" 
+  integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" 
+  crossorigin="anonymous">
 
   <!-- jQuery library -->
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js" ></script>
+  <script type="text/javascript" 
+  src="https://code.jquery.com/jquery-2.2.4.min.js" ></script>
 
   <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" 
+  integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" 
+  crossorigin="anonymous"></script>
 
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 
@@ -37,7 +46,7 @@
           t=undefined;
           $("#logoutWarning").html("La sesión ha caducado.");
           $("#username").css("color", "red");
-          $("#inOut").html('<span class="glyphicon glyphicon-log-in"></span>Iniciar sesión');
+          $("#inOut").html('<span class="glyphicon glyphicon-log-in"></span>&nbsp;Iniciar sesión');
           $("#inOut").css("href", "/session");
         }
       };
@@ -57,11 +66,11 @@
       	  <ul class="nav navbar-nav navbar-right">
             <li><a href="/users/new">
               <span class="glyphicon glyphicon-user"></span> 
-              Registrarse</a> 
+              &nbsp;Registrarse</a> 
             </li>
             <li><a href="/session">
               <span class="glyphicon glyphicon-log-in"></span> 
-              Iniciar sesión</a>
+              &nbsp;Iniciar sesión</a>
             </li>
           </ul>
           <% } else { %>
@@ -69,16 +78,16 @@
             <li class="dropdown">
               <a id="username" class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <span class="glyphicon glyphicon-user"></span>
-                <%= session.user.username %>
+                &nbsp;<%= session.user.username %>
               <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="/users/<%= session.user.id %>">
                   <span class="glyphicon glyphicon-home"></span>
-                  Perfil</a>
+                  &nbsp;Perfil</a>
                 </li>
                 <li><a id="inOut" href="/session?_method=DELETE">
                   <span class="glyphicon glyphicon-log-out"></span> 
-                  Cerrar sesión</a>
+                  &nbsp;Cerrar sesión</a>
                 </li> 
               </ul>
             </li>     
@@ -88,8 +97,8 @@
     </nav>
     <div class="container">
       <div class="row">
-      	<div class="col-md-2">
-      	  <div class="sidebar-nav">
+      	<div class="col-lg-2">
+      	  <div class="sidebar-nav small">
             <div class="navbar navbar-default" role="navigation">
               <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
@@ -102,21 +111,42 @@
         	  </div>
        	 	  <div class="navbar-collapse collapse sidebar-navbar-collapse">
           		<ul class="nav navbar-nav">
-            	  <li><a href="/">Inicio</a></li>
-            	  <li><a href="/quizzes">Preguntas</a></li>
+            	  <li><a href="/">
+                <span class="glyphicon glyphicon-home"></span>
+                &nbsp;Inicio
+                </a></li>
+            	  <li><a href="/quizzes">
+                  <span class="glyphicon glyphicon-question-sign"></span> 
+                  &nbsp;Preguntas
+                </a></li>
             	  <% if (session.user) { %>
-            	  <li><a href="/users/<%= session.user.id %>/quizzes">Mis Preguntas</a></li>
-            	  <li><a href="/users/<%=session.user.id%>/favourites">Mis Favoritos </a></li>
+            	  <li><a href="/users/<%= session.user.id %>/quizzes">
+                  <span class="glyphicon glyphicon-send"></span>
+                  &nbsp;Mis Preguntas
+                </a></li>
+            	  <li><a href="/users/<%=session.user.id%>/favourites">
+                  <span class="glyphicon glyphicon-star"></span>
+                  &nbsp;Mis Favoritos
+                </a></li>
             	  <% } %>
-            	  <li><a href="/users">Usuarios</a></li>
-            	  <li><a href="/statistics">Estadísticas</a></li>
-            	  <li><a href="/author">Autor</a></li>
+            	  <li><a href="/users">
+                  <span class="glyphicon glyphicon-user"></span>
+                  &nbsp;Usuarios
+                </a></li>
+            	  <li><a href="/statistics">
+                  <span class="glyphicon glyphicon-stats"></span>
+                  &nbsp;Estadísticas
+                </a></li>
+            	  <li><a href="/author">
+                  <span class="glyphicon glyphicon-info-sign"></span>
+                  &nbsp;Autor
+                </a></li>
           		</ul>
         	  </div>
       		</div>
     	  </div>
       	</div>
-      	<div class="col-md-10 text-center">
+      	<div class="col-lg-10 text-center">
       	  <div class="row">
 	        <% if (messages.info) { %>
 	          <div class="alert alert-info">
@@ -155,9 +185,9 @@
 	          </div>
 	        <% } %>
       	  </div>
-	      <div class="row">
-	        <%- body %>
-	      </div>
+	        <div class="row">
+	          <%- body %>
+	        </div>
       	</div>
       </div>   
     </div>
@@ -174,7 +204,9 @@
           segundos</p>
           <% } else { %>
           <p>No ha iniciado sesión</p>
-          <% } %>	
+          <% } %>
+          <% var bot = (process.env.BOT === "true") ? "encendido" : "apagado"; %>
+          <p>El Bot de Telegram está <%= bot %> en este momento</p>
           </div>  	
   	  </div>
   	</footer>

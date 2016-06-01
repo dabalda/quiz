@@ -1,33 +1,38 @@
-<h2> Usuarios </h2>
-
-<table>
+<div class="row">
+  <h2> Usuarios </h2>  
+</div>
+<div class="row">
+  
+</div>
+<div class="row">
   <% for (var i in users) { %>
-    <tr>
+  <div class="row user row-sm-flex-center">   
+    <div class="col-sm-6"> 
+      <a href="/users/<%= users[i].id %>" ><%= users[i].username %></a>
+      <%= users[i].isAdmin ? "(admin)" : "" %>
+    </div>
+    <% if (session.user) { %>
+    <div class="col-sm-6">
+      <div class="btn-group">
+        <% if (session.user.isAdmin || session.user.id === users[i].id) { %>
+        <a href="/users/<%= users[i].id %>/edit" class="btn btn-primary" role="button">Editar</a>
+        <% } %>
+        <% if (session.user.isAdmin && session.user.id !== users[i].id) { %>
+        <a href="/users/<%= users[i].id %>?_method=DELETE" 
+           onClick="return confirm('Borrar cuenta: <%= users[i].username %>');" class="btn btn-warning" role="button">
+          Borrar
+        </a> 
+        <% } %>
+      </div>      
+    </div>
 
-      <td> 
-        <a href="/users/<%= users[i].id %>" ><%= users[i].username %></a>
-        <%= users[i].isAdmin ? "(admin)" : "" %>
-      </td>
-
-      <% if (session.user) { %>
-        <td>
-          <% if (session.user.isAdmin || session.user.id === users[i].id) { %>
-            <a href="/users/<%= users[i].id %>/edit"><button>Editar</button></a>
-          <% } %>
-        </td>
-        <td>
-          <% if (session.user.isAdmin && session.user.id !== users[i].id) { %>
-            <a href="/users/<%= users[i].id %>?_method=DELETE" 
-               onClick="return confirm('Borrar cuenta: <%= users[i].username %>');">
-               <button>Borrar</button> 
-            </a> 
-          <% } %>
-        </td>
-      <% } %>
-    </tr>
+    <% } %>
+  </div>
   <%  }; %>
-</table>
+</div>
 
 <% if (session.user) { %>
+<div class="row">
   <a href="/users/new"><button type="button">Crear usuario</button></a>
+</div>
 <% }; %>
