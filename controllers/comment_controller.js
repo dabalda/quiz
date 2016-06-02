@@ -106,19 +106,10 @@ exports.destroy = function(req, res, next) {
 
 // Estadísticas de comentarios
 exports.statistics = function(req, res, next) {
-  models.Comment.findAll({
-    attributes: [[Sequelize.fn('COUNT', Sequelize.col('id')), 'no_comments']]
+  models.Comment.count()
+  .then(function(count) {
+      req.no_comments = count;
+      next();
   })
-  .then(function(comments) {
-      if (comments) {
-        if (!req.statistics) {
-          req.statistics = {};
-        }
-        req.statistics.comments = comments[0].dataValues;
-        next();
-      } else { 
-        next(new Error('comment no existe'));
-      }
-    })
   .catch(function(error) { next(error); });
 };
