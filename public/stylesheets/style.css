@@ -1,15 +1,20 @@
 body {
-  background: #eee;  
+  background: grey;  
 }
 
-footer.container-fluid {
+.main {
+  background: #eee;
+  padding-bottom: 40px;
+}
+
+footer.container {
   padding-left: 0px;
   padding-right: 0px;
-  margin-top: 40px;
-}
+  background-color: grey;
+  }
 
 footer .row {
-  background-color: grey;
+  max-width: 1200px; 
   color: white;
   padding-top: 10px;
 }
@@ -66,6 +71,7 @@ body > footer a {
 .comment {
   border-top: 1px;
   border-top-style: solid;
+  border-color: #999;
   padding: 10px;
 }
 
