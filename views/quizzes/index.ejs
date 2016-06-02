@@ -3,7 +3,7 @@
 	  <h2> <%= title || "Quizzes" %> </h2>
 	</div>
 	<div class ="col-sm-3">
-	  <form role="form" method="get" action=<%= url %>>
+	  <form class="search" role="form" method="get" action=<%= url %>>
 	    <div class="input-group">
 	      <input type="text" class="form-control" name="search" value="<%= search %>" placeholder="Pregunta" size="10px"></input>
 	      <span class="input-group-btn">
@@ -14,7 +14,7 @@
 	</div>
 	<% if (session.user) { %>
 	<div class="col-sm-3">
-	    <a href="/quizzes/new" class="btn btn-primary" role="button">Crear pregunta</a>
+	    <a href="/quizzes/new" class="btn btn-primary quizzes-new" role="button">Crear pregunta</a>
 	</div>
 	<% } %>	
 </div>
@@ -26,11 +26,13 @@
 	<% } %>
 		  <% for (var i in quizzes) { %>        
 		     <div class="row quiz row-sm-flex-center <% if (session.user && session.user.id === quizzes[i].AuthorId) { %>me<% } %>">
+		     <% if (session.user) { %>
 		        <div class="col-sm-1">
 		          <% var quiz = quizzes[i]; %>      
 		          <%- include ../favourites/_stars.ejs %>
 		        </div>
-		        <div class="col-sm-1" >
+		    <% } %>
+		        <div class="col-sm-<%= session.user ? '2' : '3' %>" >
 		          <% if (quizzes[i].Attachment) { %>
 		             <img class="quizImage" src="<%= quizzes[i].Attachment.url %>"/>
 		          <% } else { %> 
@@ -40,7 +42,7 @@
 		        <div class="col-sm-4">
 		           <a href="/quizzes/<%= quizzes[i].id %>"><%= quizzes[i].question %></a>
 		        </div>
-		        <div class="col-sm-3">
+		        <div class="col-sm-<%= session.user ? '2' : '5' %>">
 		        <% if (quizzes[i].AuthorId) {
 		              if (quizzes[i].Author) { %>
 		                Creado por&nbsp;<a href="/users/<%= quizzes[i].AuthorId %>"><%= quizzes[i].Author.username %></a>
