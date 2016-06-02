@@ -4,14 +4,14 @@
   </div>
   <% if (session.user) { %>
   <div class="col-sm-6">
-    <a href="/users/new" class="btn btn-primary" role="button">Crear usuario</a>
+    <a href="/users/new" class="btn btn-primary users-new" role="button">Crear usuario</a>
   </div>
   <% } %> 
 </div>
 <div class="row">
   <% for (var i in users) { %>
   <div class="row user row-sm-flex-center <% if (session.user && session.user.id === users[i].id) { %>me<% } %>">   
-    <div class="col-sm-6"> 
+    <div class="col-sm-<%= session.user ? '6' : '12' %>"> 
       <a href="/users/<%= users[i].id %>" ><%= users[i].username %></a>
       <%= users[i].isAdmin ? "(admin)" : "" %>
     </div>
