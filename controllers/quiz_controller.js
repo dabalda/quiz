@@ -81,6 +81,11 @@ exports.index = function(req, res, next) {
     options.where.AuthorId = req.user.id;
   }
 
+  else if (req.url.match(/^\/quizzes\/anonymous/)) {
+    title = "Preguntas anónimas"
+    options.where.AuthorId = 0;
+  }
+
   // Para usuarios logeados: incluir los fans de las preguntas.
   if (req.session.user) {
       options.include.push({ model: models.User, as: 'Fans' });

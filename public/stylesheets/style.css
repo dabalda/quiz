@@ -31,11 +31,11 @@ body > footer a {
   border-radius: 0px;
 }
 
-.navbar-default .navbar-nav > .active-color > a {
+.navbar-default .navbar-nav  .active-color > a {
   color: blue;
 }
 
-.navbar-default .navbar-nav > li > a:hover {
+.navbar-default .navbar-nav  li > a:hover {
   color: green;
 }
 

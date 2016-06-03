@@ -115,61 +115,81 @@
             	  <li 
             	  <% if(url === "/") { %>
             	  class="active-color "
-				  <% } %>
-            	  ><a href="/">
-                <span class="glyphicon glyphicon-home"></span>
-                &nbsp;Inicio
-                </a></li>
-            	  <li
-            	  <% if(url === "/quizzes") { %>
-            	  class="active-color"
-				  <% } %>
-            	  ><a href="/quizzes">
-                  <span class="glyphicon glyphicon-question-sign"></span> 
-                  &nbsp;Preguntas
-                </a></li>
-            	  <% if (session.user) { %>
-            	  <li
-            	  <% if(url === "/users/"+session.user.id+"/quizzes") { %>
-            	  class="active-color"
-				  <% } %>
-            	  ><a href="/users/<%= session.user.id %>/quizzes">
-                  <span class="glyphicon glyphicon-send"></span>
-                  &nbsp;Mis Preguntas
-                </a></li>
-            	  <li
-            	  <% if(url === "/users/"+session.user.id+"/favourites") { %>
-            	  class="active-color"
-				  <% } %>
-            	  ><a href="/users/<%=session.user.id%>/favourites">
-                  <span class="glyphicon glyphicon-star"></span>
-                  &nbsp;Mis Favoritos
-                </a></li>
-            	  <% } %>
+				  <% } %>>
+					  <a href="/">
+	                  <span class="glyphicon glyphicon-home"></span>
+	                  &nbsp;Inicio</a>
+                  </li>
+
+
+
+      			  <li class="dropdown">
+        			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        			  <span class="glyphicon glyphicon-question-sign"></span> 
+	                  &nbsp;Preguntas
+        			  <span class="caret"></span>
+        			</a>
+        			<ul class="dropdown-menu">
+	            	  <li
+	            	  <% if(url === "/quizzes") { %>
+	            	  class="active-color"
+					  <% } %>>
+						  <a href="/quizzes">
+		                  <span class="glyphicon glyphicon-question-sign"></span> 
+		                  &nbsp;Todas</a>
+	                  </li>
+	            	  <li
+	            	  <% if(url === "/quizzes/anonymous") { %>
+	            	  class="active-color"
+					  <% } %>>
+						  <a href="/quizzes/anonymous">
+		                  <span class="glyphicon glyphicon-user"></span> 
+		                  &nbsp;Anónimas</a>
+	                  </li> 
+	                <% if (session.user) { %>
+	            	  <li
+	            	  <% if(url === "/users/"+session.user.id+"/quizzes") { %>
+	            	  class="active-color"
+					  <% } %>>
+						  <a href="/users/<%= session.user.id %>/quizzes">
+		                  <span class="glyphicon glyphicon-send"></span>
+		                  &nbsp;Mis Preguntas</a>
+	                  </li>
+	            	  <li
+	            	  <% if(url === "/users/"+session.user.id+"/favourites") { %>
+	            	  class="active-color"
+					  <% } %>>
+						  <a href="/users/<%=session.user.id%>/favourites">
+		                  <span class="glyphicon glyphicon-star"></span>
+		                  &nbsp;Mis Favoritos</a>
+	                  </li>
+	            	<% } %>
+        			</ul>
+      			  </li>
             	  <li
             	  <% if(url === "/users") { %>
             	  class="active-color"
-				  <% } %>
-            	  ><a href="/users">
-                  <span class="glyphicon glyphicon-user"></span>
-                  &nbsp;Usuarios
-                </a></li>
+				  <% } %>>
+					  <a href="/users">
+	                  <span class="glyphicon glyphicon-user"></span>
+	                  &nbsp;Usuarios</a>
+                  </li>
             	  <li
             	  <% if(url === "/statistics") { %>
             	  class="active-color"
-				  <% } %>
-            	  ><a href="/statistics">
-                  <span class="glyphicon glyphicon-stats"></span>
-                  &nbsp;Estadísticas
-                </a></li>
+				  <% } %>>
+					  <a href="/statistics">
+	                  <span class="glyphicon glyphicon-stats"></span>
+	                  &nbsp;Estadísticas</a>
+                  </li>
             	  <li
             	  <% if(url === "/author") { %>
             	  class="active-color"
-				  <% } %>
-            	  ><a href="/author">
-                  <span class="glyphicon glyphicon-info-sign"></span>
-                  &nbsp;Autor
-                </a></li>
+				  <% } %>>
+	            	  <a href="/author">
+	                  <span class="glyphicon glyphicon-info-sign"></span>
+	                  &nbsp;Autor</a>   
+                  </li>
           		</ul>
         	  </div>
       		</div>
