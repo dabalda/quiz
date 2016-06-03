@@ -33,6 +33,11 @@ __Lista de preguntas favoritas de cada usuario__
 
 __Estadísticas__
 
+__Lista de comentarios__
+  * Lista completa para administrador.
+  * Lista de los comentarios de las preguntas de cada usuario.
+  * Todos o solo los pendientes.
+
 __Aviso de autologout en pantalla__
 
   * Cuenta atrás en pie de página.

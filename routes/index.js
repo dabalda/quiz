@@ -48,7 +48,14 @@ router.delete('/users/:userId(\\d+)',   sessionController.loginRequired,
 										userController.destroy); // borrar cuenta
 router.get('/users/:userId(\\d+)/quizzes.:format?', 
 										quizController.index);     // ver las preguntas de un usuario
-
+router.get('/users/:userId(\\d+)/comments.:format?', 
+										sessionController.loginRequired, 
+										sessionController.adminOrMyselfRequired, 
+										commentController.index); // ver los comentarios en las preguntas de un usuario
+router.get('/users/:userId(\\d+)/comments/pending.:format?', 
+										sessionController.loginRequired, 
+										sessionController.adminOrMyselfRequired, 
+										commentController.index); // ver los comentarios que requieren atención
 
 // Definición de rutas de /quizzes
 router.get('/quizzes.:format?',            		quizController.index);
@@ -72,6 +79,12 @@ router.delete('/quizzes/:quizId(\\d+)',    		sessionController.loginRequired,
 												quizController.destroy);
 
 // Definición de rutas de comentarios
+router.get('/comments.:format?',  				   sessionController.loginRequired, 
+												   sessionController.adminRequired, 
+	                                               commentController.index);
+router.get('/comments/pending.:format?',  		   sessionController.loginRequired, 
+												   sessionController.adminRequired, 
+	                                               commentController.index);
 router.get('/quizzes/:quizId(\\d+)/comments/new',  sessionController.loginRequired, 
 	                                               commentController.new);
 router.post('/quizzes/:quizId(\\d+)/comments',     sessionController.loginRequired, 

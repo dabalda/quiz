@@ -33,6 +33,68 @@ exports.ownershipRequired = function(req, res, next){
 };
 
 
+// GET /comments.:format?
+// GET /comments/pending.:format?
+// GET /users/:userId/comments.:format?
+// GET /users/:userId/comments/pending.:format?
+exports.index = function(req, res, next) {
+
+  var title = "Comentarios";
+  var options = {};
+  options.where = {};
+
+  options.include = [{model: models.User, as: 'Author', attributes: ['username']}, 
+                     {model: models.Quiz, include: [{model: models.User, 
+                                                     as: 'Author', 
+                                                    attributes: ['username']}]}];
+
+  var pending;
+  if (req.url.match(/\/comments\/pending/)) {
+    pending = true;
+    options.where.accepted = false;
+  }
+
+  if (req.user) {
+    if (req.session.user && req.session.user.id === req.user.id) {
+      title = "Comentarios " + (pending ? "pendientes " : "") + "en mis preguntas";      
+    }
+    else {
+      title = "Comentarios " + (pending ? "pendientes " : "") + "en las preguntas de "+req.user.username;
+    }
+    options.include[1].where = {}
+    options.include[1].where['AuthorId'] = req.user.id;
+    console.log(options);
+  }
+
+  var search = req.query.search || '';
+
+  if (search) {
+    search_sql = "%"+search.replace(/ /gi, "%")+"%";
+    options.where.text = {$like: search_sql};
+    options.order = ['text'];
+  }
+
+  models.Comment.findAll(options)
+    .then(function(comments) {
+
+      if (!req.params.format || req.params.format === "html") {
+          res.render('comments/index.ejs', {comments: comments,
+                                            search: search,
+                                            title: title});
+      }
+      else if (req.params.format === "json") {
+        res.json(comments);
+      }
+      else {
+        throw new Error('No se admite format=' + req.params.format);
+      }
+    })
+    .catch(function(error) {
+      next(error);
+    });
+};
+
+
 // GET /quizzes/:quizId/comments/new
 exports.new = function(req, res, next) {
   var comment = models.Comment.build({text: ""});

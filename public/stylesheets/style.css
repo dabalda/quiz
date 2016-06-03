@@ -48,7 +48,8 @@ body > footer a {
   color: green;
 }
 
-.quiz {
+.quiz, .comments-comment {
+  min-height: 50px;
   border-radius: 8px;
   background: white;
   margin: 5px;
