@@ -1,31 +1,48 @@
-
-<h2>Usuario</h2>
-
-<p>
-  <b>Nombre de usuario:</b>
-  <%= user.username %>
-</p>
-
-<p>
-  <b>Es Administrador:</b>
-  <%= user.isAdmin ? "Sí" : "No" %>
-</p>
-
-<% if (session.user) { %>
-  <div class="btn-group">
-  <% if (session.user.isAdmin || session.user.id === user.id) { %>
-    <a href="/users/<%= user.id %>/edit" class="btn btn-success" role="button"> 
-	  Editar
-	</a>
-  <% } %>	  
-  <% if (session.user.isAdmin && session.user.id !== user.id) { %>
-	<a href="/users/<%= user.id %>?_method=DELETE" class="btn btn-danger" role="button" onClick="return confirm('Borrar cuenta: <%= user.username %>');">
-	  Borrar 
-	</a>
+<div class="row user-profile">
+  <div class="col-md-6">
+    <div class="row">
+      <h2>Datos de usuario</h2>
+      <p>
+        <b>Nombre de usuario:</b>
+        <%= user.username %>
+      </p>
+      <p>
+        <b>Es Administrador:</b>
+        <%= user.isAdmin ? "Sí" : "No" %>
+      </p>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="row">
+      <h3>Actividad</h3>
+      <p><b>Preguntas</b></p>
+      <div class="btn-group">
+        <a href="/users/<%= user.id %>/favourites" class="btn btn-primary" role="button">Favoritas</a>
+        <a href="/users/<%= user.id %>/quizzes" class="btn btn-success" role="button">Creadas</a> 
+      </div>
+    </div>
+    <% if (session.user) { %>
+    <div class="row">
+      <h3>Administrar</h3>
+      <div class="btn-group">
+      <% if (session.user.isAdmin || session.user.id === user.id) { %>
+        <a href="/users/<%= user.id %>/edit" class="btn btn-success" role="button"> 
+  	    Editar
+  	    </a>
+      <% } %>	  
+      <% if (session.user.isAdmin && session.user.id !== user.id) { %>
+  	    <a href="/users/<%= user.id %>?_method=DELETE" class="btn btn-danger" role="button" onClick="return confirm('Borrar cuenta: <%= user.username %>');">
+  	    Borrar 
+  	    </a>
+      <% } %>
+      </div>
+    </div>
   <% } %>
   </div>
-<% } %>
+</div>
+<div class="row">
+  <a href="/users" class="btn btn-warning" role="button"> 
+  Volver
+  </a>
+</div>
 
-<a href="/users" class="btn btn-warning" role="button"> 
-   Volver
-</a>

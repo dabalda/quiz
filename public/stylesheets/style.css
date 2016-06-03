@@ -1,5 +1,10 @@
 body {
-  background: grey;  
+  background: grey;
+}
+
+.title {
+  background: #881A2A;
+  background-image: linear-gradient(to bottom,#881A2A 0,#A52D3F 100%);
 }
 
 .main {
@@ -7,10 +12,14 @@ body {
   padding-bottom: 40px;
 }
 
+.navbar-right {
+  background: #2D5811;
+  background-image: linear-gradient(to bottom,#2D5811 0,#447B20 100%);
+}
+
 footer.container {
   padding-left: 0px;
   padding-right: 0px;
-  background-color: grey;
   }
 
 footer .row {
@@ -41,7 +50,7 @@ body > footer a {
 
 .quiz {
   border-radius: 8px;
-  background-color: white;
+  background: white;
   margin: 5px;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -50,7 +59,7 @@ body > footer a {
 
 .user {
   border-radius: 8px;
-  background-color: white;
+  background: white;
   margin: 5px;
   min-height: 50px;
   padding-top: 3px;
@@ -59,7 +68,7 @@ body > footer a {
 }
 
 .comments {
-  background-color: #fff;
+  background: #fff;
   margin: 10px;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.15),0 1px 5px rgba(0,0,0,.075);
 }
@@ -71,16 +80,18 @@ body > footer a {
 .comment {
   border-top: 1px;
   border-top-style: solid;
-  border-color: #999;
+  border-color: rgba(153, 153, 153, 0.5);
   padding: 10px;
 }
 
 .accepted-comment {
-  background-color: #f4fff4;
+  background: #f4fff4;
+  background-image: linear-gradient(to bottom,#f4fff4 0,#e0ffe0 100%);
 }
 
 .pending-comment {
-  background-color: #fff4f4;
+  background: #fff4f4;
+  background-image: linear-gradient(to bottom,#fff4f4 0,#ffe0e0 100%);
 }
 
 .new-comment {
@@ -105,7 +116,7 @@ body > footer a {
   max-width: 380px;
   padding: 15px 35px 45px;
   margin: 0 auto;
-  background-color: #fff;
+  background: #fff;
   border: 1px solid rgba(0,0,0,0.1);  
 }
 
@@ -130,7 +141,15 @@ body > footer a {
 }
 
 .me {
-  background-color: #f4fff4;
+  background: #f4fff4;
+  background-image: linear-gradient(to bottom,#f4fff4 0,#e0ffe0 100%);
+}
+
+.user-profile, .author {
+  padding: 20px 10px;
+  margin-bottom: 20px;
+  background: white;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.15),0 1px 5px rgba(0,0,0,.075);
 }
 
 #logoutTime {

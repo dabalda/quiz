@@ -23,10 +23,18 @@ exports.index = function(req, res, next) {
                 favourite.favourite = true;
             });
 
+            var title;
+            if (req.session.user && req.session.user.id === req.user.id) {
+                title = "Mis preguntas favoritas";
+            }
+            else {
+                title = "Preguntas favoritas de " + req.user.username;
+            }
+
             if (!req.params.format || req.params.format === "html") {
                 res.render('quizzes/index.ejs', { quizzes: favourites,
                                                   search: search,
-                                                  title: "Mis preguntas favoritas"});
+                                                  title: title});
             }
             else if (req.params.format === "json") {
                 res.json(favourites);

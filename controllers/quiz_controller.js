@@ -77,7 +77,13 @@ exports.index = function(req, res, next) {
   options.include = [models.Attachment, {model: models.User, as: 'Author', attributes: ['username']}];
 
   if (req.user) {
-    title = "Mis preguntas";
+    if (req.session.user && req.session.user.id === req.user) {
+      title = "Mis preguntas";      
+    }
+    else {
+      title = "Preguntas de "+req.user.username;
+    }
+
     options.where.AuthorId = req.user.id;
   }
 

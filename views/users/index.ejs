@@ -11,12 +11,19 @@
 <div class="row">
   <% for (var i in users) { %>
   <div class="row user row-sm-flex-center <% if (session.user && session.user.id === users[i].id) { %>me<% } %>">   
-    <div class="col-sm-<%= session.user ? '6' : '12' %>"> 
+    <div class="col-sm-<%= session.user ? '5' : '8' %>"> 
       <a href="/users/<%= users[i].id %>" ><%= users[i].username %></a>
       <%= users[i].isAdmin ? "(admin)" : "" %>
     </div>
+    <div class="col-sm-4">
+      <div class="btn-group">
+        <a href="/users/<%= users[i].id %>/favourites" class="btn btn-primary" role="button">Favoritas</a>
+        <a href="/users/<%= users[i].id %>/quizzes" class="btn btn-success" role="button">Creadas</a> 
+      </div>      
+    </div>
+
     <% if (session.user) { %>
-    <div class="col-sm-6">
+    <div class="col-sm-3">
       <div class="btn-group">
         <% if (session.user.isAdmin || session.user.id === users[i].id) { %>
         <a href="/users/<%= users[i].id %>/edit" class="btn btn-primary" role="button">Editar</a>
