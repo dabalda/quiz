@@ -68,10 +68,20 @@ body > footer a {
   box-shadow: inset 0 1px 0 rgba(255,255,255,.15),0 1px 5px rgba(0,0,0,.075);
 }
 
-.comments {
+.comments, .question-show, .answer-show, .statistics, .index, .user-profile, .author {
   background: #fff;
-  margin: 10px;
+  margin: 10px 0px;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.15),0 1px 5px rgba(0,0,0,.075);
+  padding: 10px;
+  padding-bottom: 20px;
+}
+
+ .user-profile, .author, .statistics {
+  margin-bottom: 20px;
+}
+
+.comments {
+  padding: 0;
 }
 
 .comments-new {
@@ -113,7 +123,7 @@ body > footer a {
   margin-bottom: 80px;
 }
 
-.form-signin, .form-question, .form-comment, .form-user {
+.form-signin, .form-question, .form-comment, .form-user, .form-answer {
   max-width: 380px;
   padding: 15px 35px 45px;
   margin: 0 auto;
@@ -146,11 +156,9 @@ body > footer a {
   background-image: linear-gradient(to bottom,#f4fff4 0,#e0ffe0 100%);
 }
 
-.user-profile, .author {
-  padding: 20px 10px;
-  margin-bottom: 20px;
-  background: white;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.15),0 1px 5px rgba(0,0,0,.075);
+#response {
+  min-height: 30px;
+  margin: 10px;
 }
 
 #logoutTime {

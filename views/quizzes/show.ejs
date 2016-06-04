@@ -1,125 +1,165 @@
-<div class="row">
-  <h2>Pregunta</h2>
-</div>
-<div class="row">
-	<%- include ../favourites/_stars.ejs %>
-</div>
-<div class="row">
-  <blockquote>
-	<p><%= quiz.question %></p>
-  	<footer>
-  	  <% if (quiz.AuthorId) {
-      if (quiz.Author) { %>
-      <a href="/users/<%= quiz.AuthorId %>"><%= quiz.Author.username %></a>
-      <% } else { %>
-      Usuario eliminado
-      <% } %>
-      <% } else { %>
-      Anónimo
-      <% } %>
-  	</footer>
-  </blockquote>
-</div>
-
-<% if (quiz.Attachment) { %>
-<div class="row quiz-img">
-  <img src="<%= quiz.Attachment.url %>" />
-</div>
-<% } %> 
-
-<div class="row">
-  <form role="form" class="form-signin" method="get" action="/quizzes/<%= quiz.id %>/check">  
-    <input type="text" class="form-control" name="answer" value="<%= answer %>" placeholder="Respuesta" required=""/>
-    <button type="submit" class="btn btn-block">Comprobar</button>
-  </form>
-</div>
-
-<div class="row comments">
-  <div class="row">
-    <h2>Comentarios</h2>	
-  </div>
-
-  <% if (session.user) { %>
-  <div class="row comments-new">
-    <a href="/quizzes/<%= quiz.id %>/comments/new" class="btn btn-primary" role="button">Nuevo comentario</a>
-  </div>
-  <% } %>
-  <div class="row">
-  <% if (quiz.Comments.length === 0) { %>
-    <p>Todavía no hay ningún comentario</p>  
-  <% } %>
-  <% for (var i in quiz.Comments) { %>
-    <% var comment = quiz.Comments[i];
-    if (comment.accepted) { %>
-    <div class="col-md-6 comment accepted-comment">
-        <div class="row">
-          <%= comment.text %> 
-        </div>
-        <div class="row">
-     			<% if (comment.AuthorId) {
-              if (comment.Author) {%>
-        			 Por <a href="/users/<%= comment.AuthorId %>"><%= comment.Author.username %></a>
-            <% } else { %>
-                  Usuario eliminado
-            <% } %>
+<div class="col-sm-6">
+  <div class="row question-show">
+    <div class="row">
+      <h2>Pregunta</h2>
+    </div>
+    <div class="row">
+    	<%- include ../favourites/_stars.ejs %>
+    </div>
+    <div class="row">
+      <blockquote>
+    	<p><%= quiz.question %></p>
+      	<footer>
+      	  <% if (quiz.AuthorId) {
+          if (quiz.Author) { %>
+          <a href="/users/<%= quiz.AuthorId %>"><%= quiz.Author.username %></a>
           <% } else { %>
-        			Anónimo
-     	 		<% } %>
+          Usuario eliminado
+          <% } %>
+          <% } else { %>
+          Anónimo
+          <% } %>
+      	</footer>
+      </blockquote>
+    </div>
+    <% if (quiz.Attachment) { %>
+    <div class="row quiz-img">
+      <img src="<%= quiz.Attachment.url %>" />
+    </div>
+    <% } %> 
+  </div>
+</div>
+<div class="col-sm-6">
+  <div class="row answer-show">
+    <div class="row">
+      <h2>Respuesta</h2>
+    </div>
+    <div class="row">
+      <div class="form form-answer">  
+        <input type="text" class="form-control" id="answer" value="<%= answer %>" placeholder="Respuesta" required=""/>
+        <button type="submit" class="btn btn-block" id="check">Comprobar</button>
+      </div>
+      <div id="response"></div>
+    </div>
+  </div>
+</div>
+<div class="col-sm-12">
+  <div class="row comments">
+    <div class="row">
+      <h2>Comentarios</h2>	
+    </div>
+
+    <% if (session.user) { %>
+    <div class="row comments-new">
+      <a href="/quizzes/<%= quiz.id %>/comments/new" class="btn btn-primary" role="button">Nuevo comentario</a>
+    </div>
+    <% } %>
+    <div class="row">
+    <% if (quiz.Comments.length === 0) { %>
+      <p>Todavía no hay ningún comentario</p>  
+    <% } %>
+    <% for (var i in quiz.Comments) { %>
+      <% var comment = quiz.Comments[i];
+      if (comment.accepted) { %>
+      <div class="col-md-6 comment accepted-comment">
+          <div class="row">
+            <%= comment.text %> 
           </div>
           <div class="row">
-          <% if (session.user && 
-                        (session.user.isAdmin || 
-                        (quiz.AuthorId === session.user.id) || 
-                        (comment.AuthorId === session.user.id))) { %>
-             <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE" class="btn btn-warning" role="button">
-                Borrar
-             </a>
-          <% } %>            
-      	</div>
-    </div>
-    <% } else if (session.user &&
-                  (session.user.isAdmin || (quiz.AuthorId === session.user.id))) { %>
-    <div class="col-md-6 comment pending-comment">
-      <div class="row">
-        <%= comment.text %>     
+       			<% if (comment.AuthorId) {
+                if (comment.Author) {%>
+          			 Por <a href="/users/<%= comment.AuthorId %>"><%= comment.Author.username %></a>
+              <% } else { %>
+                    Usuario eliminado
+              <% } %>
+            <% } else { %>
+          			Anónimo
+       	 		<% } %>
+            </div>
+            <div class="row">
+            <% if (session.user && 
+                          (session.user.isAdmin || 
+                          (quiz.AuthorId === session.user.id) || 
+                          (comment.AuthorId === session.user.id))) { %>
+               <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE" class="btn btn-warning" role="button">
+                  Borrar
+               </a>
+            <% } %>            
+        	</div>
       </div>
-      <div class="row">
-     	<% if (comment.AuthorId) {
-        if (comment.Author) { %>
-        	Por <a href="/users/<%= comment.AuthorId %>"><%= comment.Author.username %></a>
+      <% } else if (session.user &&
+                    (session.user.isAdmin || (quiz.AuthorId === session.user.id))) { %>
+      <div class="col-md-6 comment pending-comment">
+        <div class="row">
+          <%= comment.text %>     
+        </div>
+        <div class="row">
+       	<% if (comment.AuthorId) {
+          if (comment.Author) { %>
+          	Por <a href="/users/<%= comment.AuthorId %>"><%= comment.Author.username %></a>
+          <% } else { %>
+            Usuario eliminado
+          <% } %>
         <% } else { %>
-          Usuario eliminado
-        <% } %>
-      <% } else { %>
-        	Anónimo
-     	<% } %>
+          	Anónimo
+       	<% } %>
+        </div>
+        <div class="row">
+          <div class="btn-group">
+            <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>/accept?_method=PUT" class="btn btn-success" role="button">
+              Aceptar
+            </a>
+            <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE" class="btn btn-warning" role="button">
+              Borrar
+            </a>
+          </div>
+        </div>
       </div>
-      <div class="row">
-        <div class="btn-group">
-          <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>/accept?_method=PUT" class="btn btn-success" role="button">
-            Aceptar
-          </a>
+      <% } else if (session.user && (comment.AuthorId === session.user.id)) { %>
+      <div class="col-md-6 comment pending-comment">
+        <div class="row">  
+          <%= comment.text %> 
+        </div>
+        <div class="row"> 
+          Su comentario todavía no ha sido aprobado.
+        </div>
+        <div class="row"> 
           <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE" class="btn btn-warning" role="button">
             Borrar
           </a>
         </div>
       </div>
-    </div>
-    <% } else if (session.user && (comment.AuthorId === session.user.id)) { %>
-    <div class="col-md-6 comment pending-comment">
-      <div class="row">  
-        <%= comment.text %> 
-      </div>
-      <div class="row"> 
-        Su comentario todavía no ha sido aprobado.
-      </div>
-      <div class="row"> 
-        <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>?_method=DELETE" class="btn btn-warning" role="button">
-          Borrar
-        </a>
-      </div>
-    </div>
+      <% } %>
     <% } %>
-  <% } %>
+    </div>
   </div>
 </div>
+<script>
+        $(function() {
+
+            var check = $("#check");
+            var answer = $("#answer");
+            var response = $("#response");
+            check.click( function() {
+                var request = new XMLHttpRequest();
+                var url = "/quizzes/"+<%=quiz.id%>+"/check?answer="+encodeURIComponent(answer.val());
+                request.open("GET", url, true);
+                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+                request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                request.onreadystatechange = function() {
+                    if (request.readyState === 4 && request.status === 200) {
+
+                        response.html(request.responseText);
+
+                        <% if (session.user) { %>
+                          $("#logoutTime").html(Math.floor(session.user.sessionTimeout/1000));
+                        <% } %>
+                        
+
+                    }
+                };
+                request.send(null);
+                return false; // Deshabilita el enlace
+            });
+        });
+    </script>

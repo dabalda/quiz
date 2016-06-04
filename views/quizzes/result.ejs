@@ -1,2 +1,7 @@
-<h2>La respuesta <strong> <%= answer %> </strong> es <%= result %>.</h2>
+<h3>La respuesta <strong> <%= answer %> </strong> es <%= result %>.</h3>
+
+<% if (result === "correcta") { %>
+<p>¡Enhorabuena!</p>
+<% } else { %>
 <p><a href="/quizzes/<%= quiz.id %>?answer=<%= answer %>"> Inténtelo otra vez </a></p>
+<% } %>

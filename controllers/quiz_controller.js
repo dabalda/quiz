@@ -164,9 +164,17 @@ exports.check = function(req, res, next) {
 
   var result = answer.toLowerCase() === req.quiz.answer.toLowerCase() ? 'correcta' : 'incorrecta';
 
-  res.render('quizzes/result', { quiz:   req.quiz, 
-                                 result: result, 
-                                 answer: answer });
+  if (req.xhr) {
+    // res.send(result);
+    res.render('quizzes/result', { quiz:   req.quiz, 
+                                   result: result, 
+                                   answer: answer,
+                                   layout: false});
+  } else {
+    res.render('quizzes/result', { quiz:   req.quiz, 
+                                   result: result, 
+                                   answer: answer });
+  }
 };
 
 
