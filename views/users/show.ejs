@@ -15,21 +15,29 @@
   <div class="col-md-6">
     <div class="row">
       <h3>Actividad</h3>
-      <p><b>Preguntas</b></p>
+      <h5>Preguntas</h5>
       <div class="btn-group">
-        <a href="/users/<%= user.id %>/favourites" class="btn btn-primary" role="button">Favoritas</a>
-        <a href="/users/<%= user.id %>/quizzes" class="btn btn-success" role="button">Creadas</a> 
+        <a href="/users/<%= user.id %>/favourites" class="btn btn-default" role="button">Favoritas</a>
+        <a href="/users/<%= user.id %>/quizzes" class="btn btn-default" role="button">Creadas</a> 
       </div>
     </div>
-    <% if (session.user) { %>
+    <% if (session.user &&  (session.user.isAdmin || session.user.id === user.id)) { %>
     <div class="row">
       <h3>Administrar</h3>
+      <h5>Comentarios en sus preguntas</h5>
       <div class="btn-group">
-      <% if (session.user.isAdmin || session.user.id === user.id) { %>
-        <a href="/users/<%= user.id %>/edit" class="btn btn-success" role="button"> 
+        <a href="/users/<%= user.id %>/comments" class="btn btn-default" role="button"> 
+  	    Todos
+  	    </a> 
+        <a href="/users/<%= user.id %>/comments/pending" class="btn btn-default" role="button"> 
+  	    Pendientes
+  	    </a> 
+  	  </div>
+      <h5>Usuario</h5>
+      <div class="btn-group">
+        <a href="/users/<%= user.id %>/edit" class="btn btn-default" role="button"> 
   	    Editar
-  	    </a>
-      <% } %>	  
+  	    </a>	  
       <% if (session.user.isAdmin && session.user.id !== user.id) { %>
   	    <a href="/users/<%= user.id %>?_method=DELETE" class="btn btn-danger" role="button" onClick="return confirm('Borrar cuenta: <%= user.username %>');">
   	    Borrar 
