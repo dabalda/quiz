@@ -80,6 +80,10 @@ body > footer a {
   margin-bottom: 20px;
 }
 
+.question-show {
+  padding-bottom: 0px;
+}
+
 .comments {
   padding: 0;
 }
@@ -149,6 +153,12 @@ body > footer a {
 
 .quizImage {
   height: 50px;
+}
+
+.quiz-info p {
+  font-size: xx-small;
+  float: right;
+  color: #999;
 }
 
 .me {
