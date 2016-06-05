@@ -22,7 +22,11 @@ exports.loginRequired = function (req, res, next) {
     if (req.session.user) {
         next();
     } else {
+      if (req.xhr) {
+        res.send(404);
+      } else {
         res.redirect('/session?redir=' + (req.param('redir') || req.url));
+      }
     }
 };
 
@@ -125,7 +129,7 @@ exports.create = function(req, res, next) {
               // Crear req.session.user y guardar campos id, username y expireTime
               // La sesión se define por la existencia de: req.session.user
               var expireTime = Date.now() + sessionTimeout;
-              req.session.user = {id:user.id, username:user.username, isAdmin:user.isAdmin, expireTime:expireTime, sessionTimeout: sessionTimeout};
+              req.session.user = {id:user.id, username:user.username, isAdmin:user.isAdmin, expireTime:expireTime};
 
               res.redirect(redir); // redirección a redir
             } else {
@@ -157,7 +161,6 @@ exports.autologout = function(req, res, next) {
 
     if (req.session.user.expireTime >= Date.now()) {
       req.session.user.expireTime = Date.now() + sessionTimeout;
-      req.session.user.sessionTimeout = sessionTimeout;
     }
     else {
       delete req.session.user;

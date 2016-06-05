@@ -35,21 +35,21 @@
   <% if (session.user){ %>
   
   <script type="text/javascript">
+    var t;
+    function refreshLogout(){
+      if (+$("#logoutTime").html() > 1){
+        $("#logoutTime").html($("#logoutTime").html()-1);
+      }
+      else {
+        clearInterval(t); 
+        t=undefined;
+        $("#logoutWarning").html("La sesión ha caducado");
+        $("#username").css("color", "red");
+        $("#inOut").html('<span class="glyphicon glyphicon-log-in"></span>&nbsp;Iniciar sesión');
+        $("#inOut").css("href", "/session");
+      }
+    };
     $(function(){
-
-      function refreshLogout(){
-        if (+$("#logoutTime").html() > 1){
-          $("#logoutTime").html($("#logoutTime").html()-1);
-        }
-        else {
-          clearInterval(t); 
-          t=undefined;
-          $("#logoutWarning").html("La sesión ha caducado");
-          $("#username").css("color", "red");
-          $("#inOut").html('<span class="glyphicon glyphicon-log-in"></span>&nbsp;Iniciar sesión');
-          $("#inOut").css("href", "/session");
-        }
-      };
         t = setInterval(refreshLogout, 1000);   
     });
   </script>
@@ -268,7 +268,7 @@
       	<div class="col-sm-6">
           <% if (session.user){ %>
           <p id ="logoutWarning">La sesión se cerrará automáticamente en 
-          <b id ="logoutTime"><%= Math.floor(session.user.sessionTimeout/1000) %></b> 
+          <b id ="logoutTime"><%= Math.ceil((session.user.expireTime - Date.now())/1000) %></b> 
           segundos</p>
           <% } else { %>
           <p>No ha iniciado sesión</p>

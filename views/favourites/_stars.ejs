@@ -26,18 +26,33 @@
 
             var star = $("#star<%= quiz.id %>");
             var path = $("#star_path<%= quiz.id %>");
+            var logoutWarning = $("#logoutWarning");
             star.click( function() {
                 var request = new XMLHttpRequest();
                 var method = state ? "DELETE" : "PUT";
                 var url = "/users/" + userId + "/favourites/" + quizId + "?_method=" + method;
                 request.open("POST", url);
                 request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+                request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                 request.onreadystatechange = function() {
-                    if (request.readyState === 4 && request.status === 200) {
-                        path.css( "fill", (state ? "none" : "yellow"));
-                        state = !state;
-                        $("#logoutTime").html(<%= Math.floor(session.user.sessionTimeout/1000) %>);
-
+                    if (request.readyState === 4) {
+                        if (request.status === 404) {
+                            logoutWarning.html("La sesión ha caducado");
+                            path.css( "fill", (state ? "black" : "red"));
+                            if (t) {
+                              clearInterval(t);
+                            }
+                            t = undefined;                            
+                        } else if (request.status === 200) {
+                          path.css( "fill", (state ? "none" : "yellow"));
+                            state = !state;
+                            if (t) {
+                              clearInterval(t);
+                            }
+                            text = 'La sesión se cerrará automáticamente en <b id ="logoutTime"><%= Math.ceil((session.user.expireTime - Date.now())/1000) %></b> segundos';
+                            logoutWarning.html(text);
+                            t = setInterval(refreshLogout, 1000);  
+                        }
                     }
                 };
                 request.send("");

@@ -152,7 +152,11 @@
                         response.html(request.responseText);
 
                         <% if (session.user) { %>
-                          $("#logoutTime").html(Math.floor(session.user.sessionTimeout/1000));
+                        if (t) {
+                          clearInterval(t);
+                          $("#logoutTime").html(<%= Math.ceil((session.user.expireTime - Date.now())/1000) %>);
+                          t = setInterval(refreshLogout, 1000); 
+                        }
                         <% } %>
                         
 
