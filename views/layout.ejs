@@ -30,9 +30,11 @@
 
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 
+  <link href='https://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+
   <link rel="stylesheet" href="/stylesheets/style.css">
 
-  <% if (session.user){ %>
+  <% if (session.user && !session.user.isAdmin){ %>
   
   <script type="text/javascript">
     var t;
@@ -272,14 +274,18 @@
       	</div>
       	<div class="col-sm-6">
           <% if (session.user){ %>
-          <p id ="logoutWarning">La sesión se cerrará automáticamente en 
-          <b id ="logoutTime"><%= Math.ceil((session.user.expireTime - Date.now())/1000) %></b> 
-          segundos</p>
+            <% if (session.user.isAdmin) { %>
+            <p>Ha iniciado sesión como administrador.</p>
+            <% } else { %>
+            <p id ="logoutWarning">La sesión se cerrará automáticamente en 
+            <b id ="logoutTime"><%= Math.ceil((session.user.expireTime - Date.now())/1000) %></b> 
+            segundos.</p>
+            <% } %>
           <% } else { %>
-          <p>No ha iniciado sesión</p>
+            <p>No ha iniciado sesión.</p>
           <% } %>
           <% var bot = (process.env.BOT === "true") ? "encendido" : "apagado"; %>
-          <p>El Bot de Telegram está <%= bot %> en este momento</p>
+          <p>El Bot de Telegram está <%= bot %> en este momento.</p>
           </div>  	
   	  </div>
   	</footer>

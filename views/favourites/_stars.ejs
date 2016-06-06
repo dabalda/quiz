@@ -37,7 +37,7 @@
                 request.onreadystatechange = function() {
                     if (request.readyState === 4) {
                         if (request.status === 404) {
-                            logoutWarning.html("La sesión ha caducado");
+                            logoutWarning.html("La sesión ha caducado.");
                             path.css( "fill", (state ? "black" : "red"));
                             if (t) {
                               clearInterval(t);
@@ -45,13 +45,15 @@
                             t = undefined;                            
                         } else if (request.status === 200) {
                           path.css( "fill", (state ? "none" : "yellow"));
-                            state = !state;
+                          state = !state;
+                          <% if (!session.user.isAdmin) { %>
                             if (t) {
                               clearInterval(t);
                             }
-                            text = 'La sesión se cerrará automáticamente en <b id ="logoutTime"><%= Math.ceil((session.user.expireTime - Date.now())/1000) %></b> segundos';
+                            text = 'La sesión se cerrará automáticamente en <b id ="logoutTime"><%= Math.ceil((session.user.expireTime - Date.now())/1000) %></b> segundos.';
                             logoutWarning.html(text);
-                            t = setInterval(refreshLogout, 1000);  
+                            t = setInterval(refreshLogout, 1000); 
+                          <% } %>
                         }
                     }
                 };
