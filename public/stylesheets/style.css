@@ -3,18 +3,13 @@ body {
 }
 
 .title {
-  background: #881A2A;
-  background-image: linear-gradient(to bottom,#881A2A 0,#A52D3F 100%);
+  background: #2D5811;
+  background-image: linear-gradient(to bottom,#2D5811 0,#447B20 100%);
 }
 
 .main {
   background: #eee;
   padding-bottom: 40px;
-}
-
-.navbar-right {
-  background: #2D5811;
-  background-image: linear-gradient(to bottom,#2D5811 0,#447B20 100%);
 }
 
 footer.container {
@@ -164,6 +159,16 @@ body > footer a {
 .me {
   background: #f4fff4;
   background-image: linear-gradient(to bottom,#f4fff4 0,#e0ffe0 100%);
+}
+
+#answer {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+#check {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
 }
 
 #response {

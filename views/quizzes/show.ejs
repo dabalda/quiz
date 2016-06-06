@@ -38,10 +38,10 @@
       <h2>Respuesta</h2>
     </div>
     <div class="row">
-      <div class="form form-answer">  
-        <input type="text" class="form-control" id="answer" value="<%= answer %>" placeholder="Respuesta" required=""/>
+      <form class="form form-answer" id="form-answer" method='GET' action='/quizzes/<%=quiz.id%>/check'>  
+        <input type="text" class="form-control" id="answer" name="answer" value="<%= answer %>" placeholder="Respuesta" required=""/>
         <button type="submit" class="btn btn-block" id="check">Comprobar</button>
-      </div>
+      </form>
       <div id="response"></div>
     </div>
   </div>
@@ -140,10 +140,11 @@
 <script>
         $(function() {
 
-            var check = $("#check");
+            var form = $("#form-answer");
             var answer = $("#answer");
             var response = $("#response");
-            check.click( function() {
+            form.submit( function(e) {
+                e.preventDefault();
                 var request = new XMLHttpRequest();
                 var url = "/quizzes/"+<%=quiz.id%>+"/check?answer="+encodeURIComponent(answer.val());
                 request.open("GET", url, true);

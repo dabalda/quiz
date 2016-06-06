@@ -61,39 +61,44 @@
     <nav class="navbar navbar-inverse navbar-top">
         <div class="container-fluid">
           <div class="navbar-header">
-      		<a class="navbar-brand title" href="/">Quiz</a>
-    	  </div>
-      	  <% if (!session.user) { %>
-      	  <ul class="nav navbar-nav navbar-right">
-            <li><a href="/users/new">
-              <span class="glyphicon glyphicon-user"></span> 
-              &nbsp;Registrarse</a> 
-            </li>
-            <li><a href="/session">
-              <span class="glyphicon glyphicon-log-in"></span> 
-              &nbsp;Iniciar sesión</a>
-            </li>
-          </ul>
-          <% } else { %>
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a id="username" class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <span class="glyphicon glyphicon-user"></span>
-                &nbsp;<%= session.user.username %>
-              <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="/users/<%= session.user.id %>">
-                  <span class="glyphicon glyphicon-home"></span>
-                  &nbsp;Perfil</a>
-                </li>
-                <li><a id="inOut" href="/session?_method=DELETE">
-                  <span class="glyphicon glyphicon-log-out"></span> 
-                  &nbsp;Cerrar sesión</a>
-                </li> 
-              </ul>
-            </li>     
-          </ul>
-          <% } %>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#top-navbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>  
+            </button>
+            <a class="navbar-brand title" href="/">Quiz</a>
+    	    </div>
+          <div class="collapse navbar-collapse" id="top-navbar">
+            <ul class="nav navbar-nav navbar-right" >
+        	  <% if (!session.user) { %>
+              <li><a href="/users/new">
+                <span class="glyphicon glyphicon-user"></span> 
+                &nbsp;Registrarse</a> 
+              </li>
+              <li><a href="/session">
+                <span class="glyphicon glyphicon-log-in"></span> 
+                &nbsp;Iniciar sesión</a>
+              </li>
+            <% } else { %>
+              <li class="dropdown">
+                <a id="username" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                  <span class="glyphicon glyphicon-user"></span>
+                  &nbsp;<%= session.user.username %>
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/users/<%= session.user.id %>">
+                    <span class="glyphicon glyphicon-home"></span>
+                    &nbsp;Perfil</a>
+                  </li>
+                  <li><a id="inOut" href="/session?_method=DELETE">
+                    <span class="glyphicon glyphicon-log-out"></span> 
+                    &nbsp;Cerrar sesión</a>
+                  </li> 
+                </ul>
+              </li>     
+            <% } %>
+            </ul>
+          </div>
       	</div>     
     </nav>
     <div class="container">
