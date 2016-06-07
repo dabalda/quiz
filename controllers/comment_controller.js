@@ -168,10 +168,18 @@ exports.destroy = function(req, res, next) {
 
 // Estadísticas de comentarios
 exports.statistics = function(req, res, next) {
-  models.Comment.count()
-  .then(function(count) {
-      req.no_comments = count;
-      next();
+  p1 = models.Comment.count()
+
+  var options2 = {
+    where: {accepted: true}
+  };
+  p2 = models.Comment.count(options2);
+
+  Promise.all([p1, p2])
+  .then(function(count){
+    req.no_comments = count[0];
+    req.no_accepted_comments = count[1];
+    next();
   })
   .catch(function(error) { next(error); });
 };

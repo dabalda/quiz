@@ -392,12 +392,23 @@ exports.showTelegram = function(msg, match) {
 
 // Estadísticas de preguntas
 exports.statistics = function(req, res, next) {
-  models.Quiz.count()
-  .then(function(count) {
-      req.no_quizzes = count;
-      next();
-  })
-  .catch(function(error) { next(error); });
+
+	var p1 = models.Quiz.count();
+
+	var options2 = {
+	  	distinct: true,
+	  	include: [{	model: models.Comment,
+	  				required: true}]
+	};
+	var p2 = models.Quiz.count(options2);
+
+	Promise.all([p1, p2])
+	.then(function(count){
+	  req.no_quizzes = count[0];
+	  req.no_quizzes_with_comments = count[1];
+	  next();
+	})
+	.catch(function(error) { next(error); });
 };
 
 // FUNCIONES AUXILIARES

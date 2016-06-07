@@ -135,10 +135,29 @@ exports.destroy = function(req, res, next) {
 
 // Estadísticas de usuarios
 exports.statistics = function(req, res, next) {
-  models.User.count()
-  .then(function(count) {
-      req.no_users = count;
+
+    var p1 = models.User.count();
+
+    var options2 = {
+        distinct: true,
+        include: [{ model: models.Comment,
+                    required: true}]
+    };
+    var p2 = models.User.count(options2);
+
+    var options3 = {
+        distinct: true,
+        include: [{ model: models.Quiz,
+                    required: true}]
+    };
+    var p3 = models.User.count(options3);
+
+    Promise.all([p1, p2, p3])
+    .then(function(count){
+      req.no_users = count[0];
+      req.no_users_with_comments = count[1];
+      req.no_users_with_quizzes = count[2];
       next();
-  })
-  .catch(function(error) { next(error); });
+    })
+    .catch(function(error) { next(error); });
 };
