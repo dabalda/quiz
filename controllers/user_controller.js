@@ -45,9 +45,17 @@ exports.new = function(req, res, next) {
 
 // POST /users
 exports.create = function(req, res, next) {
+
+    var options = {fields: ["username", "password", "salt"]};
+
     var user = models.User.build({ username: req.body.user.username,
                                    password: req.body.user.password
                                 });
+
+    if (req.session.user && req.session.user.isAdmin) {
+        user.isAdmin = req.body.user.isAdmin;
+        options.fields.push("isAdmin");
+    }
 
     // El login debe ser unico:
     models.User.find({where: {username: req.body.user.username}})
@@ -58,7 +66,7 @@ exports.create = function(req, res, next) {
                 res.render('users/new', { user: user });
             } else {
                 // Guardar en la BBDD
-                return user.save({fields: ["username", "password", "salt"]})
+                return user.save(options)
                     .then(function(user) { // Renderizar pagina de usuarios
                         req.flash('success', 'Usuario creado con éxito.');
                         res.redirect('/session'); // Redirección a página de login
@@ -87,19 +95,44 @@ exports.edit = function(req, res, next) {
 // PUT /users/:id
 exports.update = function(req, res, next) {
 
-    // req.user.username  = req.body.user.username; // No se permite su edición
-    req.user.password  = req.body.user.password;
+    var options = {fields: []};
 
-    // El campo de contraseña no puede estar vacío
-    if ( ! req.body.user.password) { 
-        req.flash('error', "El campo Contraseña debe rellenarse.");
-        return res.render('users/edit', {user: req.user});
+    if (req.session.user.isAdmin && req.user.id !== req.session.user.id) { // Si se pueden modificar los permisos
+        
+        options.fields.push("isAdmin");
+        console.log("Puede modificar permisos.");
+
+        if (! req.body.user.password) { // Si el campo de contraseña está vacío
+            console.log("Contraseña vacía.");
+            if (req.user.isAdmin === req.body.user.isAdmin) { // Si no se modifican los permisos
+                console.log("No quiere modificar permisos.");
+                req.flash('error', "No hay nada nuevo que guardar."); // Se pide que se haga algún cambio
+                return res.render('users/edit', {user: req.user});
+            }
+        } else { // Si el campo de contraseña no está vacío se intenta guardar contraseña y permisos
+            console.log("Contraseña rellena.");
+            req.user.password  = req.body.user.password;
+            options.fields.push("password", "salt");
+        }
+        req.user.isAdmin = !!req.body.user.isAdmin;
+
+    } else { // Si no se pueden modificar los permisos
+        console.log("No puede modificar permisos.");
+        if (! req.body.user.password) { // Si el campo de contraseña está vacío
+            console.log("Contraseña vacía.");
+            req.flash('error', "El campo Contraseña debe rellenarse."); // Se pide que se rellene
+            return res.render('users/edit', {user: req.user});           
+        } else { // Si el campo de contraseña no está vacío se intenta guardar
+            console.log("Contraseña rellena.");
+            req.user.password  = req.body.user.password;
+            options.fields.push("password", "salt");
+        }
     }
 
-    req.user.save({fields: ["password", "salt"]})
+    req.user.save(options)
         .then(function(user) {
             req.flash('success', 'Usuario actualizado con éxito.');
-            res.redirect('/users');  // Redirección HTTP a /
+            res.redirect('/users/'+user.id);
         })
         .catch(Sequelize.ValidationError, function(error) {
 

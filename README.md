@@ -31,7 +31,13 @@ __Lista de preguntas favoritas de cada usuario__
 
 ###Mejoras:  
 
+__Interfaz adaptable con Bootstrap__
+
 __Estadísticas__
+
+__Borrar comentarios__
+  * El creador del comentario, el de la pregunta y los administradores pueden borrar.
+  * Al borrar una pregunta también se borran todos sus comentarios.
 
 __Lista de comentarios__
   * Lista completa para administrador.
@@ -44,7 +50,8 @@ __Aviso de autologout en pantalla__
   * Cuando caduca la sesión cambia la barra de accesos directos de usuario.
   * Tiene en cuenta que AJAX refresca la sesión.
 
-__Interfaz que reacciona con Bootstrap__
+__Gestión de permiso de administración__
+  * Los administradores pueden dar y quitar el permiso a cualquier usuario excepto a sí mismos.
 
 __Bot de Telegram__
 

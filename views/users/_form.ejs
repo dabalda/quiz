@@ -2,11 +2,12 @@
    function confirmPassword() {
       var pw1 = document.getElementById('user_password').value;
       var pw2 = document.getElementById('user_confirm_password').value;
-
+      <% if (!session.user || !session.user.isAdmin || user.id === session.user.id) { %>
       if (!pw1 || !pw2) {
          alert('Debe rellenar los campos de Contraseña y Confirmación.');
          return false;
       }
+      <% } %>
 
       if (pw1 === pw2) {
          return true;
@@ -36,6 +37,11 @@
 	<input type="password" class="form-control" id="user_confirm_password" /> <p>
 </div>
 
+<% if (session.user && session.user.isAdmin && session.user.id !== user.id) { %>
+  <div class="checkbox">
+    <label><input type="checkbox" name="user[isAdmin]" <%= user.isAdmin ? "checked" : "" %>>Administrador</label>
+  </div>
+<% } %>
 
 <div class="btn-group">
 	<a href="/" class="btn btn-warning" role="button">Cancelar</a>

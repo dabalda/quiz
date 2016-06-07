@@ -9,6 +9,16 @@
       <p>
         <b>Es Administrador:</b>
         <%= user.isAdmin ? "Sí" : "No" %>
+        <% if (session.user && session.user.isAdmin && session.user.id !== user.id) { %>
+        <form method="post" action="/users/<%= user.id %>?_method=PUT">
+          <input type="hidden" name="user[password]" value=""/>
+          <% if (!user.isAdmin) { %>     
+            <button name="user[isAdmin]" type="submit" class="btn btn-success" value="true" role="button">Dar permisos de administrador</button>
+          <% } else { %>
+            <button name="user[isAdmin]" type="submit" class="btn btn-danger" role="button">Quitar permisos de administrador</button>
+          <% } %>
+        </form>
+        <% } %>
       </p>
     </div>
   </div>
