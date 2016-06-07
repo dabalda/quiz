@@ -3,7 +3,7 @@
 	  Editar usuario
 	</h2>
 
-	<form method="post" class="form-user" action="/users/<%= user.id %>?_method=PUT">      
+	<form method="post" class="form-user" action="/users/<%= user.id %>?_method=PUT" enctype="multipart/form-data">      
 	  <% include _form.ejs %>
 	</form>
 </div>

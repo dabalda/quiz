@@ -36,12 +36,14 @@ router.delete('/session', sessionController.destroy); // destruir sesión
 router.get('/users',                    userController.index);   // listado usuarios
 router.get('/users/:userId(\\d+)',      userController.show);    // ver un usuario
 router.get('/users/new',                userController.new);     // formulario sign in
-router.post('/users',                   userController.create);  // registrar usuario
+router.post('/users',                   upload.single('image'),
+										userController.create);  // registrar usuario
 router.get('/users/:userId(\\d+)/edit', sessionController.loginRequired, 
 										sessionController.adminOrMyselfRequired, 
 										userController.edit);    // editar información de cuenta
 router.put('/users/:userId(\\d+)',      sessionController.loginRequired, 
-										sessionController.adminOrMyselfRequired, 
+										sessionController.adminOrMyselfRequired,
+										upload.single('image'), 
 										userController.update);  // actualizar información de cuenta
 router.delete('/users/:userId(\\d+)',   sessionController.loginRequired, 
 										sessionController.adminAndNotMyselfRequired, 

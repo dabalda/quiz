@@ -2,6 +2,11 @@
   <div class="col-md-6">
     <div class="row">
       <h2>Datos de usuario</h2>
+      <% if (user.Avatar) { %>
+        <img class="img-circle userProfileImage" src="<%= user.Avatar.url %>"/>
+      <% } else { %> 
+        <img class="img-circle userProfileImage" src="https://res.cloudinary.com/dmx0we4ia/image/upload/v1465325851/avatar_ezag1p.png"/>
+      <% } %> 
       <p>
         <b>Nombre de usuario:</b>
         <%= user.username %>
@@ -13,9 +18,9 @@
         <form method="post" action="/users/<%= user.id %>?_method=PUT">
           <input type="hidden" name="user[password]" value=""/>
           <% if (!user.isAdmin) { %>     
-            <button name="user[isAdmin]" type="submit" class="btn btn-success" value="true" role="button">Dar permisos de administrador</button>
+            <button name="user[isAdmin]" type="submit" class="btn btn-success" value="true" role="button">Dar permisos</button>
           <% } else { %>
-            <button name="user[isAdmin]" type="submit" class="btn btn-danger" role="button">Quitar permisos de administrador</button>
+            <button name="user[isAdmin]" type="submit" class="btn btn-danger" role="button">Quitar permisos</button>
           <% } %>
         </form>
         <% } %>

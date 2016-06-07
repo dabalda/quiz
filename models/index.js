@@ -38,6 +38,9 @@ var User = sequelize.import(path.join(__dirname,'user'));
 // Importar la definición de la tabla Attachments de attachment.js
 var Attachment = sequelize.import(path.join(__dirname,'attachment'));
 
+// Importar la definición de la tabla Avatars de avatar.js
+var Avatar = sequelize.import(path.join(__dirname,'avatar'));
+
 // Favoritos:
 //   Un Usuario tiene muchos quizzes favoritos.
 //   Un quiz tiene muchos fans (los usuarios que lo han marcado como favorito)
@@ -63,7 +66,12 @@ Quiz.belongsTo(User, {as: 'Author', foreignKey: 'AuthorId'}); // Añade Author a
 Attachment.belongsTo(Quiz);
 Quiz.hasOne(Attachment);
 
+// Relación 1 a 1 ente User y Avatar
+Avatar.belongsTo(User);
+User.hasOne(Avatar);
+
 exports.Quiz = Quiz;       			// exportar definición de tabla Quiz
 exports.Comment = Comment; 			// exportar definición de tabla Comments
 exports.User = User;       			// exportar definición de tabla Users
 exports.Attachment = Attachment; 	// exportar definición de tabla Attachments
+exports.Avatar = Avatar; 			// exportar definición de tabla Avatars

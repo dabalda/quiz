@@ -10,8 +10,15 @@
 </div>
 <div class="row">
   <% for (var i in users) { %>
-  <div class="row user row-sm-flex-center <% if (session.user && session.user.id === users[i].id) { %>me<% } %>">   
-    <div class="col-sm-<%= session.user ? '5' : '8' %>"> 
+  <div class="row user row-sm-flex-center <% if (session.user && session.user.id === users[i].id) { %>me<% } %>">  
+    <div class="col-sm-1" >
+      <% if (users[i].Avatar) { %>
+        <img class="userImage img-circle" src="<%= users[i].Avatar.url %>"/>
+      <% } else { %> 
+        <img class="userImage img-circle" src="https://res.cloudinary.com/dmx0we4ia/image/upload/v1465325851/avatar_ezag1p.png"/>
+      <% } %> 
+    </div>
+    <div class="col-sm-<%= session.user ? '4' : '7' %>"> 
       <a href="/users/<%= users[i].id %>" ><%= users[i].username %></a>
       <%= users[i].isAdmin ? "(admin)" : "" %>
     </div>

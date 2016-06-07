@@ -147,8 +147,16 @@ body > footer a {
   border-top-right-radius: 0;
 }
 
-.quizImage {
+.quizImage, .userImage {
   height: 50px;
+}
+
+.userProfileImage {
+  height: 90px;
+}
+
+.quizAuthorImage, .commentAuthorImage {
+  height: 15px;
 }
 
 .quiz-info p {

@@ -2,7 +2,7 @@
 var models = require('../models');
 var Sequelize = require('sequelize');
 var cloudinary = require('cloudinary');
-var fs = require('fs');
+var cloudinaryController = require('./cloudinary_controller');
 var bot = require('../bot');
 var url = require('url');
 
@@ -17,9 +17,10 @@ exports.load = function(req, res, next, quizId) {
                                 {model: models.Comment, include: [ 
                                       {model: models.User, 
                                        as: 'Author', 
-                                       attributes: ['username']}]}, 
-                                models.Attachment, 
-                                {model: models.User, as: 'Author', attributes: ['username']} ] })
+                                       attributes: ['username'],
+                                       include: [{model: models.Avatar}]}]}, 
+                                models.Attachment,
+                                {model: models.User, as: 'Author', attributes: ['username'], include: [{model: models.Avatar}]} ] })
       .then(function(quiz) {
           if (quiz) {
             req.quiz = quiz;
@@ -212,7 +213,7 @@ exports.create = function(req, res, next) {
         }    
 
         // Salvar la imagen en Cloudinary
-        return uploadResourceToCloudinary(req)
+        return cloudinaryController.uploadResourceToCloudinary(req, cloudinary_image_options)
         .then(function(uploadResult) {
             // Crear nuevo attachment en la BBDD.
             return createAttachment(req, uploadResult, quiz);
@@ -274,7 +275,7 @@ exports.update = function(req, res, next) {
         }  
 
         // Salvar la imagen nueva en Cloudinary
-        return uploadResourceToCloudinary(req)
+        return cloudinaryController.uploadResourceToCloudinary(req, cloudinary_image_options)
         .then(function(uploadResult) {
             // Actualizar el attachment en la BBDD.
             return updateAttachment(req, uploadResult, quiz);
@@ -402,10 +403,18 @@ exports.statistics = function(req, res, next) {
 	};
 	var p2 = models.Quiz.count(options2);
 
-	Promise.all([p1, p2])
+  var options3 = {
+      distinct: true,
+      include: [{ model: models.Attachment,
+            required: true}]
+  };
+  var p3 = models.Quiz.count(options3);
+
+	Promise.all([p1, p2, p3])
 	.then(function(count){
 	  req.no_quizzes = count[0];
 	  req.no_quizzes_with_comments = count[1];
+    req.no_quizzes_with_attachment = count[2];
 	  next();
 	})
 	.catch(function(error) { next(error); });
@@ -469,35 +478,3 @@ function updateAttachment(req, uploadResult, quiz) {
         cloudinary.api.delete_resources(uploadResult.public_id);
     });
 }
-
-
-/**
- * Crea una promesa para subir una imagen nueva a Cloudinary. 
- * Tambien borra la imagen original.
- * 
- * Si puede subir la imagen la promesa se satisface y devuelve el public_id y 
- * la url del recurso subido. 
- * Si no puede subir la imagen, la promesa tambien se cumple pero devuelve null.
- *
- * @return Devuelve una Promesa. 
- */
-function uploadResourceToCloudinary(req) {
-    return new Promise(function(resolve,reject) {
-        var path = req.file.path;
-        cloudinary.uploader.upload(path, function(result) {
-                fs.unlink(path); // borrar la imagen subida a ./uploads
-                if (! result.error) {
-                    resolve({ public_id: result.public_id, url: result.secure_url });
-                } else {
-                    req.flash('error', 'No se ha podido salvar la nueva imagen: '+result.error.message);
-                    resolve(null);
-                }
-            },
-            cloudinary_image_options
-        );
-    })
-}
-
-        
-
-

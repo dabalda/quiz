@@ -18,20 +18,26 @@ Desarrollado por David Baldazo a partir del original para la asignatura 'Computa
 ###Opcional:  
 
 __Lista de preguntas creadas por cada usuario__
-
   * Acceso directo en usuarios
+  * JSON
 
 __Favoritos con AJAX__
 
 __Lista de preguntas favoritas de cada usuario__
-
   * Acceso directo en usuarios
+  * JSON
 
 --- 
 
 ###Mejoras:  
 
 __Interfaz adaptable con Bootstrap__
+
+__Comprobación de respuestas con AJAX__
+
+__Fecha de última modificación en preguntas__
+
+__Imagen de perfil de usuario__
 
 __Estadísticas__
 
@@ -43,6 +49,7 @@ __Lista de comentarios__
   * Lista completa para administrador.
   * Lista de los comentarios de las preguntas de cada usuario.
   * Todos o solo los pendientes.
+  * JSON
 
 __Aviso de autologout en pantalla__
 

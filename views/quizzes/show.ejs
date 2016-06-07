@@ -13,6 +13,11 @@
       	  <% if (quiz.AuthorId) {
           if (quiz.Author) { %>
           <a href="/users/<%= quiz.AuthorId %>"><%= quiz.Author.username %></a>
+            <% if (quiz.Author.Avatar) { %>
+              <img class="img-circle quizAuthorImage" src="<%= quiz.Author.Avatar.url %>"/>
+            <% } else { %> 
+              <img class="img-circle quizAuthorImage" src="https://res.cloudinary.com/dmx0we4ia/image/upload/v1465325851/avatar_ezag1p.png"/>
+            <% } %> 
           <% } else { %>
           Usuario eliminado
           <% } %>
@@ -71,7 +76,12 @@
           <div class="row">
        			<% if (comment.AuthorId) {
                 if (comment.Author) {%>
-          			 Por <a href="/users/<%= comment.AuthorId %>"><%= comment.Author.username %></a>
+          			  Por <a href="/users/<%= comment.AuthorId %>"><%= comment.Author.username %></a>
+                  <% if (comment.Author.Avatar) { %>
+                    <img class="img-circle commentAuthorImage" src="<%= comment.Author.Avatar.url %>"/>
+                  <% } else { %> 
+                    <img class="img-circle commentAuthorImage" src="https://res.cloudinary.com/dmx0we4ia/image/upload/v1465325851/avatar_ezag1p.png"/>
+                  <% } %> 
               <% } else { %>
                     Usuario eliminado
               <% } %>
@@ -100,6 +110,11 @@
        	<% if (comment.AuthorId) {
           if (comment.Author) { %>
           	Por <a href="/users/<%= comment.AuthorId %>"><%= comment.Author.username %></a>
+              <% if (comment.Author.Avatar) { %>
+                <img class="img-circle commentAuthorImage" src="<%= comment.Author.Avatar.url %>"/>
+              <% } else { %> 
+                <img class="img-circle commentAuthorImage" src="https://res.cloudinary.com/dmx0we4ia/image/upload/v1465325851/avatar_ezag1p.png"/>
+              <% } %> 
           <% } else { %>
             Usuario eliminado
           <% } %>
