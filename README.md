@@ -19,6 +19,7 @@ Desarrollado por David Baldazo a partir del original para la asignatura 'Computa
 
 __Lista de preguntas creadas por cada usuario__
   * Acceso directo en usuarios
+  * Lista de preguntas anónimas
   * JSON
 
 __Favoritos con AJAX__
